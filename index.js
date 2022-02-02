@@ -1,3 +1,7 @@
+import homepage from './index.html.in'
+
+const {decode: htmlDecode} = require('he')
+
 addEventListener('fetch', event => {
   event.respondWith(handleRequest(event))
 })
@@ -86,8 +90,10 @@ async function fetchLinks(event, query) {
       return $
     }),
   )
-  const torrentLinks = torrents.flat()
-  console.log(torrentLinks)
+  const torrentLinks = torrents
+        .flat()
+        .map(htmlDecode)
+        .sort(t => -t.indexOf("dn="))
   return torrentLinks
 }
 
@@ -112,7 +118,7 @@ async function handleRequest(event) {
     })
   }
   if (reqUrl.pathname === '/') {
-    return new Response(require('index.html'), {
+    return new Response(homepage, {
       status: 200,
       headers: { 'content-type': 'text/html' },
     })

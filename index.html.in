@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>cf-torrent</title>
+        <link rel="stylesheet" hrefg="https://unpkg.com/sakura.css/css/sakura.css" id="css" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
+    </head>
+    <body>
+        <script src="https://bookmarklet-theme.vercel.app/script.js"></script>
+        <style>
+header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+header > h1 {
+    margin: 0 !important;
+}
+form {
+    box-sizing: content-box;
+}
+form > input {
+    margin-bottom: 0 !important;
+}
+.item-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+}
+        </style>
+        <header>
+            <h1>CF-torrent</h1>
+            <form id="form">
+                <input id="query" placeholder="Search query" name="q" type="text"></input>
+                <button type="submit">Search</button>
+            </form>
+        </header>
+        <section id="results"></section>
+        <script>
+            function createItemCard(link) {
+                try {
+                    const url = new URL(link);
+                    const container = document.createElement('div')
+                    container.classList.add("item-card")
+                    const titleEl = document.createElement('h3')
+                    titleEl.innerText = url.searchParams.get("dn")  || "[No name provided]"
+                    const linkEl = document.createElement('a')
+                    linkEl.innerText = "Link"
+                    linkEl.href = link;
+
+                    container.appendChild(titleEl)
+                    container.appendChild(linkEl)
+                    return container
+                } catch (e) {
+                    console.log("received nonsense", link)
+                }
+            }
+            async function handleQuery(query) {
+                const newElem = document.createElement('section')
+                const heading = document.createElement('h3')
+                heading.innerText = `Results for "${query}"`
+                newElem.appendChild(heading)
+                fetch(`/search?q=${encodeURIComponent(query)}`)
+                    .then((res) => res.json())
+                    .then(items => {
+                        for (i in items) {
+                            const item = decodeURI(items[i])
+                            const card = createItemCard(item)
+                            if (card) {
+                                newElem.appendChild(card)
+                            }
+                        }
+                    })
+                    .finally(() => document.getElementById("results").innerHTML = newElem.innerHTML)
+                console.log(newElem)
+                console.log("query")
+            }
+            document.getElementById("form").addEventListener('submit', (e) => {
+                e.preventDefault();
+                let query = document.getElementById("query").value;
+                if (query.indexOf("torrent") == -1) {
+                    query = query + " torrent"
+                }
+                handleQuery(query)
+            })
+        </script>
+    </body>
+</html>
