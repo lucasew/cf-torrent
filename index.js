@@ -1,7 +1,4 @@
-// const RE_GOOGLE_MATCH = new RegExp(`/url\?q=[^\"&]*`)
-
 addEventListener('fetch', event => {
-    // console.log("eoq".match("(\\w)*"))
     event.respondWith(handleRequest(event))
 })
 
@@ -105,46 +102,6 @@ async function fetchLinks(event, query) {
 async function handleRequest(event) {
     const { request } = event
     const reqUrl = new URL(request.url)
-    // if (reqUrl.pathname === "/url") {
-    //     let url = reqUrl.searchParams.get("url");
-    //     if (url && !url.startsWith("https://")) {
-    //         url = "https://" + url
-    //     }
-    //     console.log("url", url)
-    //     const torrents = await fetchTorrentsInSite(event, url);
-    //     return new Response(JSON.stringify(torrents), {
-    //         status: 200,
-    //         headers: { 'content-type': 'application/json'}
-    //     })
-    // }
-    // if (reqUrl.pathname === "/google") {
-    //     const query = reqUrl.searchParams.get("q");
-    //     if (!query) {
-    //         return new Response(null, {
-    //             status: 401
-    //         })
-    //     }
-    //     const links = await fetchLinksInGoogle(event, query)
-    //     return new Response(JSON.stringify(links), {
-    //         status: 200,
-    //         headers: { 'content-type': 'application/json'}
-    //     })
-    //     console.log(query)
-    // }
-    // if (reqUrl.pathname === "/duck") {
-    //     const query = reqUrl.searchParams.get("q");
-    //     if (!query) {
-    //         return new Response(null, {
-    //             status: 401
-    //         })
-    //     }
-    //     const links = await fetchLinksInDuckDuckGo(event, query)
-    //     return new Response(JSON.stringify(links), {
-    //         status: 200,
-    //         headers: { 'content-type': 'application/json'}
-    //     })
-    //     console.log(query)
-    // }
     if (reqUrl.pathname === '/search') {
         const query = reqUrl.searchParams.get('q')
         if (!query) {
@@ -156,6 +113,12 @@ async function handleRequest(event) {
         return new Response(JSON.stringify(links), {
             status: 200,
             headers: { 'content-type': 'application/json' },
+        })
+    }
+    if (reqUrl.pathname === '/') {
+        return new Response(require("index.html"), {
+            status: 200,
+            headers: { 'content-type': 'text/html' },
         })
     }
     return new Response(null, {
