@@ -13,14 +13,19 @@
 header {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-around;
 }
 header > h1 {
     margin: 0 !important;
+    white-space: nowrap;
+    padding-right: 10px;
 }
 form {
+    display: flex;
     box-sizing: content-box;
+    padding-left: 10px;
 }
 form > input {
     margin-bottom: 0 !important;
