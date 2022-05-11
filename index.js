@@ -8,7 +8,7 @@ addEventListener('fetch', event => {
   event.respondWith(handleRequest(event))
 })
 
-async function fetchWithCache(event, _url, cacheTTL) {
+async function fetchWithCache(event, _url, cacheTTL, options = {}) {
   const url = new URL(_url)
   const cache = caches.default
   let response = await cache.match(_url)
@@ -20,6 +20,7 @@ async function fetchWithCache(event, _url, cacheTTL) {
     const timeout = setTimeout(() => controller.abort(), 2000)
     response = await fetch(_url, {
       signal: controller.signal,
+      ...options
     }).finally(v => {
       clearTimeout(timeout)
       return v
@@ -168,11 +169,11 @@ async function handleRequest(event) {
             resources: [
                 {
                     name: 'stream',
-                    types: [ 'movie' ],
+                    types: [ 'movie', 'series' ],
                     idPrefixes: [ 'tt' ]
                 }
             ],
-            types: [ 'movie' ],
+            types: [ 'movie', 'series' ],
         }), {
             status: 200,
             headers: {
@@ -181,30 +182,45 @@ async function handleRequest(event) {
             },
         })
     }
-    if (parts[0] === 'stream' && parts[1] === 'movie') {
-        const name = parts[2]
-        const nameParts = name.split('.')
-        try {
-            const id = nameParts[0]
-            const name = await getTitleFromIMDB(event, id)
-            const links = await fetchLinks(event, `${name} torrent`)
-            const streams = await Promise.all(links.map(link => {
-                const infohashMatch = matchFirstGroup(link, `urn:btih:([^&]*)`)
-                const infoHash = infohashMatch[0]
-                const nameMatch = matchFirstGroup(link, `dn=([^&]*)`)
-                const title = htmlDecode(decodeURIComponent(nameMatch.length > 0 ? nameMatch[0] : '< NO NAME >')).replaceAll('+', ' ')
-                return {infoHash, title}
-            }))
-            return new Response(JSON.stringify({streams}), {
-                status: 200,
-                headers: {
-                    'content-type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
-                },
-            })
-        } catch (e) {
-            console.error(e)
-            return new Response(JSON.stringify({streams}), {
+    if (parts[0] === 'stream') {
+        if (parts[1] === 'movie') {
+            const name = parts[2]
+            const nameParts = name.split('.')
+            try {
+                const id = nameParts[0]
+                const name = await getTitleFromIMDB(event, id)
+                const links = await fetchLinks(event, `${name} torrent`)
+                const streams = await Promise.all(links.map(link => {
+                    const infohashMatch = matchFirstGroup(link, `urn:btih:([^&]*)`)
+                    const infoHash = infohashMatch[0]
+                    const nameMatch = matchFirstGroup(link, `dn=([^&]*)`)
+                    const title = htmlDecode(decodeURIComponent(nameMatch.length > 0 ? nameMatch[0] : '< NO NAME >')).replaceAll('+', ' ')
+                    return {infoHash, title}
+                }))
+                return new Response(JSON.stringify({streams}), {
+                    status: 200,
+                    headers: {
+                        'content-type': 'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    },
+                })
+            } catch (e) {
+                console.error(e)
+                return new Response(JSON.stringify({
+                    error: e.message || e,
+                    streams: []
+                }), {
+                    status: 200,
+                    headers: {
+                        'content-type': 'text/html',
+                        'Access-Control-Allow-Origin': '*'
+                    },
+                })
+            }
+        }
+        if (parts[1] === 'series') {
+            console.log(parts)
+            return new Response(JSON.stringify({streams: []}), {
                 status: 200,
                 headers: {
                     'content-type': 'text/html',
@@ -212,6 +228,40 @@ async function handleRequest(event) {
                 },
             })
         }
+    }
+    if (parts.length >= 2 && parts[0] === 'btdigg' && parts[1].length == 40) {
+        const infohash = parts[1]
+        const res = await fetchWithCache(event, `https://btdigg.nocensor.biz/${infohash}`, 0, {
+            // "credentials": "omit",
+            "headers": {
+                "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:97.0) Gecko/20100101 Firefox/97.0",
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+                "Accept-Language": "pt-BR,en-US;q=0.7,en;q=0.3",
+                "Upgrade-Insecure-Requests": "1",
+                "Sec-Fetch-Dest": "document",
+                "Sec-Fetch-Mode": "navigate",
+                "Sec-Fetch-Site": "none",
+                "Sec-Fetch-User": "?1",
+                "Cache-Control": "max-age=0"
+            },
+            "method": "GET",
+            // "mode": "cors"
+        })
+        const text = await res.text()
+        // if (text.indexOf("https://www.google.com/recaptcha/api.js")) {
+        //     return new Response('bot?', {
+        //         status: 200,
+        //         headers: {
+        //             'content-type': 'text/html',
+        //         }
+        //     })
+        // }
+        return new Response(text, {
+            status: 200,
+            headers: {
+                'content-type': 'text/html',
+            }
+        })
     }
     return new Response(null, {
         status: 404,
