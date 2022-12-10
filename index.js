@@ -1,12 +1,36 @@
 import homepage from './index.html.in'
-
-const {decode: htmlDecode} = require('he')
-
 const packagejson = require('./package.json')
 
+global.Buffer = require('buffer').Buffer
+
+const promiseLimit = require('promise-limit')
+const {decode: htmlDecode} = require('he')
+const decodeTorrent = require('./bencode_decode.js')
+
+let concurrentConnections = 0;
+
 addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event))
+    concurrentConnections = 0
+    event.respondWith(handleRequest(event))
 })
+
+const ignoredDomains = [
+    "archive.org",
+    "drive.google.com",
+    "facebook.com",
+    "imdb.com",
+    "proxy",
+    "reddit.com",
+    "sites.google.com",
+    "torrentfreak",
+    "vpn",
+    "wixsite.com",
+    "youtube.com",
+]
+
+const fetchLimiter = promiseLimit(6)
+
+const REGEX_IGNORED_DOMAINS = new RegExp(ignoredDomains.join("|"), 'i')
 
 async function fetchWithCache(event, _url, cacheTTL, options = {}) {
   const url = new URL(_url)
@@ -18,13 +42,13 @@ async function fetchWithCache(event, _url, cacheTTL, options = {}) {
     )
     const controller = new AbortController()
     const timeout = setTimeout(() => controller.abort(), 2000)
-    response = await fetch(_url, {
+    response = await fetchLimiter(() => fetch(_url, {
       signal: controller.signal,
       ...options
     }).finally(v => {
       clearTimeout(timeout)
       return v
-    })
+    }))
     response = new Response(response.body, response)
     response.headers.append('Cache-Control', `s-maxage=${cacheTTL}`)
     event.waitUntil(cache.put(_url, response.clone()))
@@ -39,14 +63,32 @@ function matchFirstGroup(text, regexp) {
   return items.map(l => decodeURIComponent(l[1]))
 }
 
-const REGEX_MATCH_MAGNET = /(magnet:[^"' ]*)/
+const REGEX_MATCH_MAGNET = /(magnet:[^"' ]*)/g
 async function fetchTorrentsInSite(event, url) {
-  const response = await fetchWithCache(event, url, 2 * 3600)
-  const text = await response.text()
-  return matchFirstGroup(text, REGEX_MATCH_MAGNET)
+    try {
+    const response = await fetchWithCache(event, url, 2 * 3600)
+    const contentType = response.headers.get('Content-Type')
+    switch (contentType) {
+        case 'application/x-bittorrent':
+            console.log("TODO: ingest torrent files with info hash and so on")
+            return []
+            // const arrayBuffer = await response.arrayBuffer()
+            // const bencoded = decodeTorrent(arrayBuffer, null, null, 'utf8')
+            // console.log(bencoded)
+            // console.log(JSON.stringify(bencoded))
+        case 'application/octet-stream':
+            return []
+        default:
+            const text = await response.text()
+            return matchFirstGroup(text, REGEX_MATCH_MAGNET)
+    }
+    } catch (e) {
+        console.error(e)
+        return []
+    }
 }
 
-const REGEX_GOOGLE_MATCH_URL = /\/url\\?q=([^"&]*)/
+const REGEX_GOOGLE_MATCH_URL = /\/url\\?q=([^"&]*)/g
 async function fetchLinksInGoogle(event, query) {
   const response = await fetchWithCache(
     event,
@@ -62,7 +104,7 @@ async function fetchLinksInGoogle(event, query) {
   }
 }
 
-const REGEX_DDG_MATCH_URL = /uddg=([^&"]*)/
+const REGEX_DDG_MATCH_URL = /uddg=([^&"]*)/g
 async function fetchLinksInDuckDuckGo(event, query) {
   const response = await fetchWithCache(
     event,
@@ -78,7 +120,6 @@ async function fetchLinksInDuckDuckGo(event, query) {
   }
 }
 
-const REGEX_IMDB_MATCH_TITLE = /<title>(.*) - IMDb</title>/
 async function fetchLinks(event, query) {
   const links = await Promise.all([
     fetchLinksInDuckDuckGo(event, query),
@@ -87,23 +128,28 @@ async function fetchLinks(event, query) {
   const flattenLinks = links.flat()
   const uniqueLinks = [...new Set(flattenLinks)]
   const torrents = await Promise.all(
-    uniqueLinks.map(u => {
-      let $ = u
-      $ = fetchTorrentsInSite(event, $)
-      $ = $.catch(e => {
-        console.error(e)
-        return []
-      })
-      return $
-    }),
+    uniqueLinks
+      .filter((link) => !REGEX_IGNORED_DOMAINS.test(link)) // ignore unwanted words/domains
+      .sort((v) => v.match("torrent") ? -1 : 1 )           // priorize links with torrent in their name
+      .sort((v) => v.match("free") ? 1 : -1 )              // depriorize links with free in their name
+      .map(u => {                                          // fetch magnets in all these sites
+        let $ = u
+        $ = fetchTorrentsInSite(event, $)
+        $ = $.catch(e => {
+            console.error(e)
+            return []
+        })
+        return $
+      }),
   )
   const torrentLinks = torrents
-        .flat()
-        .map(htmlDecode)
-        .sort(t => -t.indexOf("dn="))
-  return [...new Set(torrentLinks)]
+        .flat()                                           // put all links in the same level
+        .map(htmlDecode)                                  // decode urlencoded links
+        .sort(t => -t.indexOf("dn="))                     // sort by name
+  return [...new Set(torrentLinks)]                       // deduplicate links and return
 }
 
+const REGEX_IMDB_MATCH_TITLE = /<title>(.*) - IMDb<\/title>/g
 async function getTitleFromIMDB(event, imdbid) {
     try {
         const response = await fetchWithCache(event, `https://www.imdb.com/title/${imdbid}`, 3600*24)
@@ -122,8 +168,8 @@ function responseJSON(data = null, statusCode = 200) {
     })
 }
 
-const REGEX_INFOHASH_MATCH = /urn:btih:([^&]*)/
-const REGEX_DN_MATCH = /dn=([^&]*)/
+const REGEX_INFOHASH_MATCH = /urn:btih:([^&]*)/g
+const REGEX_DN_MATCH = /dn=([^&]*)/g
 /**
  * Respond with hello worker text
  * @param {Request} request

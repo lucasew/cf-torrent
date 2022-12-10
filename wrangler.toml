@@ -1,10 +1,9 @@
 name = "cf-torrent"
-type = "webpack"
-webpack_config = "webpack.config.js"
+main = "./dist/main.js"
 
-account_id = ""
 workers_dev = true
-route = ""
-zone_id = ""
 compatibility_date = "2022-02-02"
+
+[build]
+command = "npm run build"
 

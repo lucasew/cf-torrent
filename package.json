@@ -6,15 +6,20 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "prettier --write '**/*.{js,css,json,md}'"
+    "format": "prettier --write '**/*.{js,css,json,md}'",
+    "build": "webpack"
   },
   "author": "lucasew <lucas59356@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "prettier": "^1.18.2",
-    "raw-loader": "^4.0.2"
+    "raw-loader": "^4.0.2",
+    "webpack-cli": "^5.0.1"
   },
   "dependencies": {
-    "he": "^1.2.0"
+    "btparse": "^1.0.2",
+    "buffer": "^6.0.3",
+    "he": "^1.2.0",
+    "promise-limit": "^2.7.0"
   }
 }
