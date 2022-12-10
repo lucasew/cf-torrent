@@ -39,12 +39,14 @@ function matchFirstGroup(text, regexp) {
   return items.map(l => decodeURIComponent(l[1]))
 }
 
+const REGEX_MATCH_MAGNET = /(magnet:[^"' ]*)/
 async function fetchTorrentsInSite(event, url) {
   const response = await fetchWithCache(event, url, 2 * 3600)
   const text = await response.text()
-  return matchFirstGroup(text, `(magnet:[^"' ]*)`)
+  return matchFirstGroup(text, REGEX_MATCH_MAGNET)
 }
 
+const REGEX_GOOGLE_MATCH_URL = /\/url\\?q=([^"&]*)/
 async function fetchLinksInGoogle(event, query) {
   const response = await fetchWithCache(
     event,
@@ -53,13 +55,14 @@ async function fetchLinksInGoogle(event, query) {
   )
   const responseText = await response.text()
   try {
-    return matchFirstGroup(responseText, `\/url\\?q=([^"&]*)`)
+    return matchFirstGroup(responseText, REGEX_GOOGLE_MATCH_URL)
   } catch (e) {
     console.error(e)
     return []
   }
 }
 
+const REGEX_DDG_MATCH_URL = /uddg=([^&"]*)/
 async function fetchLinksInDuckDuckGo(event, query) {
   const response = await fetchWithCache(
     event,
@@ -68,13 +71,14 @@ async function fetchLinksInDuckDuckGo(event, query) {
   )
   const responseText = await response.text()
   try {
-    return await matchFirstGroup(responseText, `uddg=([^&"]*)`)
+    return await matchFirstGroup(responseText, REGEX_DDG_MATCH_URL)
   } catch (e) {
     console.error(e)
     return []
   }
 }
 
+const REGEX_IMDB_MATCH_TITLE = /<title>(.*) - IMDb</title>/
 async function fetchLinks(event, query) {
   const links = await Promise.all([
     fetchLinksInDuckDuckGo(event, query),
@@ -104,7 +108,7 @@ async function getTitleFromIMDB(event, imdbid) {
     try {
         const response = await fetchWithCache(event, `https://www.imdb.com/title/${imdbid}`, 3600*24)
         const responseText = await response.text()
-        return htmlDecode(matchFirstGroup(responseText, `<title>(.*) - IMDb</title>`)[0])
+        return htmlDecode(matchFirstGroup(responseText, REGEX_IMDB_MATCH_TITLE)[0])
     } catch (e) {
         console.error(e)
         return imdbid
@@ -118,6 +122,8 @@ function responseJSON(data = null, statusCode = 200) {
     })
 }
 
+const REGEX_INFOHASH_MATCH = /urn:btih:([^&]*)/
+const REGEX_DN_MATCH = /dn=([^&]*)/
 /**
  * Respond with hello worker text
  * @param {Request} request
@@ -191,9 +197,9 @@ async function handleRequest(event) {
                 const name = await getTitleFromIMDB(event, id)
                 const links = await fetchLinks(event, `${name} torrent`)
                 const streams = await Promise.all(links.map(link => {
-                    const infohashMatch = matchFirstGroup(link, `urn:btih:([^&]*)`)
+                    const infohashMatch = matchFirstGroup(link, REGEX_INFOHASH_MATCH)
                     const infoHash = infohashMatch[0]
-                    const nameMatch = matchFirstGroup(link, `dn=([^&]*)`)
+                    const nameMatch = matchFirstGroup(link, REGEX_DN_MATCH)
                     const title = htmlDecode(decodeURIComponent(nameMatch.length > 0 ? nameMatch[0] : '< NO NAME >')).replaceAll('+', ' ')
                     return {infoHash, title}
                 }))
