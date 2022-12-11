@@ -97,7 +97,7 @@ decode.next = function () {
     case INTEGER_START:
       return decode.integer()
     default:
-      return decode.buffer()
+      return String(decode.buffer())
   }
 }
 
@@ -124,7 +124,14 @@ decode.dictionary = function () {
   var dict = {}
 
   while (decode.data[decode.position] !== END_OF_TYPE) {
-    dict[decode.buffer()] = decode.next()
+    const key = decode.buffer()
+    const from = decode.position;
+    dict[key] = decode.next()
+    const to = decode.position;
+    if (String(key) === 'info') {
+        dict['infohashFrom'] = from
+        dict['infohashTo'] = to
+    }
   }
 
   decode.position++

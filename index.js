@@ -5,7 +5,22 @@ global.Buffer = require('buffer').Buffer
 
 const promiseLimit = require('promise-limit')
 const {decode: htmlDecode} = require('he')
-const decodeTorrent = require('./bencode_decode.js')
+const decodeBencode = require('./bencode_decode.js')
+
+async function decodeTorrent(torrent) {
+    const unbencode = decodeBencode(torrent)
+    const { infohashFrom, infohashTo } = unbencode
+    const bufSlice = torrent.slice(infohashFrom, infohashTo)
+    const digest = await crypto.subtle.digest({name: 'SHA-1'}, bufSlice)
+    const hexDigest = [...new Uint8Array(digest)]
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('')
+        .toUpperCase()
+    delete unbencode.infohashFrom
+    delete unbencode.infohashTo
+    unbencode['infohash'] = hexDigest
+    return unbencode
+}
 
 let concurrentConnections = 0;
 
@@ -64,24 +79,33 @@ function matchFirstGroup(text, regexp) {
 }
 
 const REGEX_MATCH_MAGNET = /(magnet:[^"' ]*)/g
+const REGEX_MATCH_INFOHASH = /[0-9A-F]{40}/
 async function fetchTorrentsInSite(event, url) {
     try {
-    const response = await fetchWithCache(event, url, 2 * 3600)
-    const contentType = response.headers.get('Content-Type')
-    switch (contentType) {
-        case 'application/x-bittorrent':
-            console.log("TODO: ingest torrent files with info hash and so on")
+        const response = await fetchWithCache(event, url, 2 * 3600)
+        const contentType = response.headers.get('Content-Type')
+        if (contentType === 'application/x-bittorrent' || url.search(REGEX_MATCH_INFOHASH) !== -1 || url.endsWith('.torrent')) {
+            const arrayBuffer = await response.arrayBuffer()
+            const bencoded = await decodeTorrent(arrayBuffer, null, null, 'utf8')
+            let magnetLink = "magnet:?xt=urn:btih:"
+            magnetLink += bencoded.infohash
+            if (bencoded.info?.name) {
+                magnetLink += `&dn=${encodeURIComponent(bencoded.info.name)}`
+            }
+            const trackers = [ bencoded.announce, bencoded['announce-list'] ].flat()
+            trackers.forEach((tracker) => {
+                if (tracker) {
+                    magnetLink += `&tr=${encodeURIComponent(tracker)}`
+                }
+            })
+            return [ magnetLink ]
+        } else if (contentType === 'application/octet-stream') {
             return []
-            // const arrayBuffer = await response.arrayBuffer()
-            // const bencoded = decodeTorrent(arrayBuffer, null, null, 'utf8')
-            // console.log(bencoded)
-            // console.log(JSON.stringify(bencoded))
-        case 'application/octet-stream':
-            return []
-        default:
+        } else {
             const text = await response.text()
             return matchFirstGroup(text, REGEX_MATCH_MAGNET)
-    }
+        }
+
     } catch (e) {
         console.error(e)
         return []
@@ -196,7 +220,6 @@ async function handleRequest(event) {
   }
   if (parts[0] === 'imdb') {
       const imdbid = reqUrl.searchParams.get('id')
-      console.log(imdbid)
       if (!imdbid) {
           return new Response(null, {
               status: 401
@@ -271,7 +294,6 @@ async function handleRequest(event) {
             }
         }
         if (parts[1] === 'series') {
-            console.log(parts)
             return new Response(JSON.stringify({streams: []}), {
                 status: 200,
                 headers: {
