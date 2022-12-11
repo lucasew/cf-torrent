@@ -22,12 +22,12 @@ async function decodeTorrent(torrent) {
     return unbencode
 }
 
-let concurrentConnections = 0;
+const fetchLimiter = promiseLimit(6)
 
 addEventListener('fetch', event => {
-    concurrentConnections = 0
     event.respondWith(handleRequest(event))
 })
+
 
 const ignoredDomains = [
     "archive.org",
@@ -43,7 +43,6 @@ const ignoredDomains = [
     "youtube.com",
 ]
 
-const fetchLimiter = promiseLimit(6)
 
 const REGEX_IGNORED_DOMAINS = new RegExp(ignoredDomains.join("|"), 'i')
 

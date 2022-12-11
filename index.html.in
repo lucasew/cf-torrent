@@ -8,7 +8,7 @@
         <link rel="stylesheet" hrefg="https://unpkg.com/sakura.css/css/sakura.css" id="css" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
     </head>
     <body>
-        <script src="https://bookmarklet-theme.vercel.app/script.js"></script>
+        <!-- <script src="https://bookmarklet-theme.vercel.app/script.js"></script> -->
         <style>
 header {
     display: flex;
