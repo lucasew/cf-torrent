@@ -8,6 +8,7 @@
         <NavbarBrand><b>cf-torrent</b></NavbarBrand>
         <NavItem><NavLink href="/search/web">Search Web</NavLink></NavItem>
         <NavItem><NavLink href="/search/torrent">Search Torrents</NavLink></NavItem>
+        <NavItem><NavLink href="/api/stremio/manifest.json" target='_blank'></NavLink></NavItem>
     </Nav>
 
     <ForkMeBanner url="https://github.com/lucasew/cf-torrent"/>
