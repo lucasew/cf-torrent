@@ -174,5 +174,5 @@ decode.buffer = function () {
     : decode.data.slice(sep, end)
 }
 
-module.exports = decode
+export default decode
 

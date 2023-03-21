@@ -1,0 +1,1 @@
+export {decode as htmlDecode} from 'he'

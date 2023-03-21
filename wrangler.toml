@@ -1,5 +1,5 @@
 name = "cf-torrent"
-main = "./dist/main.js"
+main = ".cloudflare/worker.js"
 
 workers_dev = true
 compatibility_date = "2022-02-02"
