@@ -21,7 +21,7 @@
         <CardSubtitle><b>Infohash</b></CardSubtitle>
         <ul>
             <li>
-                {torrentURL.searchParams.get('xt')}
+                {torrentURL.searchParams.get('xt')?.replace('urn:', '').replace('btih:', '')}
             </li>
         </ul>
     </CardBody>
