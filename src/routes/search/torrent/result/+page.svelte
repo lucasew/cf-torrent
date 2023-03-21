@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from "$app/stores";
-	import { Breadcrumb, BreadcrumbItem, Input } from "sveltestrap";
+	import { Breadcrumb, BreadcrumbItem, Container, Row } from "sveltestrap";
+	import TorrentCard from "../../../../components/TorrentCard.svelte";
 
     export let data: {
         error?: string
@@ -20,13 +21,9 @@
 
 <p>Error: {data.error}</p>
 {#if links && links.length > 0}
-    <ul>
     {#each links as link}
-        <li>
-            <a href="{link}" target='_blank'>{link}</a>
-        </li>
+        <TorrentCard torrent={link} />
     {/each}
-    </ul>
 {:else}
     <p>No items found</p>
 {/if}
