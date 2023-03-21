@@ -12,6 +12,8 @@ const ignoredDomains = [
     "vpn",
     "wixsite.com",
     "youtube.com",
+    "linkedin.com",
+    "wikipedia.org",
 ]
 
 
