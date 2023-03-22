@@ -7,7 +7,7 @@ in buildNpmPackage {
 
   src = ./.;
 
-  npmDepsHash = "sha256-Xsc2NWdiTSe+mg9FAwZ1itzYkAJxnS25PbKI0C7NFIM=";
+  npmDepsHash = "sha256-uyrQQdsXPDAsBWDdoqGPpycj2CMBGz+p2gjMoASD9Pc=";
 
   buildPhase = ''
     npm run build
