@@ -7,7 +7,12 @@ in buildNpmPackage {
 
   src = ./.;
 
-  npmDepsHash = "sha256-uyrQQdsXPDAsBWDdoqGPpycj2CMBGz+p2gjMoASD9Pc=";
+  npmDepsHash = "sha256-grUgO3JoC3iygPpKFdIzyQqcXOQFTWQGw0k3ORM0ehw=";
+
+  configurePhase = ''
+    substituteInPlace svelte.config.js \
+      --replace 'const enableWorkers = true' 'const enableWorkers = false'
+  '';
 
   buildPhase = ''
     npm run build

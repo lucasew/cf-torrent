@@ -13,6 +13,7 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
+		"@cloudflare/kv-asset-handler": "^0.3.0",
 		"@cloudflare/workers-types": "^4.20230307.0",
 		"@macfja/svelte-multi-adapter": "^1.0.2",
 		"@sveltejs/adapter-auto": "^2.0.0",
