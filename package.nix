@@ -9,11 +9,6 @@ in buildNpmPackage {
 
   npmDepsHash = "sha256-Xsc2NWdiTSe+mg9FAwZ1itzYkAJxnS25PbKI0C7NFIM=";
 
-  configurePhase = ''
-    substituteInPlace svelte.config.js \
-      --replace '@sveltejs/adapter-auto' '@sveltejs/adapter-node'
-  '';
-
   buildPhase = ''
     npm run build
   '';
@@ -27,7 +22,6 @@ in buildNpmPackage {
       --chdir $APP_DIR \
       --add-flags build
     echo '{"type": "module"}' > $APP_DIR/package.json
-    ls -a
   '';
 
   meta = with lib; {
