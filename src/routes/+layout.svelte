@@ -1,10 +1,6 @@
 <script lang='ts'>
-    import { Collapse, Container, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, Styles } from 'sveltestrap';
+    import { Container, Nav, Navbar, NavbarBrand, NavItem, NavLink, Styles } from 'sveltestrap';
     import ForkMeBanner from '../components/ForkMeBanner.svelte';
-    let isOpen = false;
-    function handleUpdate(event) {
-        isOpen = event.detail.isOpen
-    }
 </script>
 
 <Styles />

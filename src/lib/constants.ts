@@ -1,5 +1,3 @@
-
-
 const ignoredDomains = [
     "archive.org",
     "drive.google.com",

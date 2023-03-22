@@ -18,6 +18,7 @@
     let use_google = true;
     let use_duckduckgo = true;
 </script>
+
 <Breadcrumb>
     <BreadcrumbItem active>Home</BreadcrumbItem>
     <BreadcrumbItem active>Search Web</BreadcrumbItem>

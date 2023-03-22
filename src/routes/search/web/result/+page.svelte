@@ -3,7 +3,6 @@
 	import { rankLinks } from "$lib/rankLinks";
 	import { Breadcrumb, BreadcrumbItem, Input } from "sveltestrap";
 
-
     export let data: {
         error?: string
         links?: string[]
