@@ -1,15 +1,23 @@
-<script lang='typescript' type='module'>
-    import { Container, Nav, NavbarBrand, NavItem, NavLink } from 'sveltestrap';
-	import ForkMeBanner from '../components/ForkMeBanner.svelte';
+<script lang='ts'>
+    import { Collapse, Container, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, Styles } from 'sveltestrap';
+    import ForkMeBanner from '../components/ForkMeBanner.svelte';
+    let isOpen = false;
+    function handleUpdate(event) {
+        isOpen = event.detail.isOpen
+    }
 </script>
 
+<Styles />
+
 <Container>
-    <Nav>
+    <Navbar>
         <NavbarBrand><b>cf-torrent</b></NavbarBrand>
-        <NavItem><NavLink href="/search/web">Search Web</NavLink></NavItem>
-        <NavItem><NavLink href="/search/torrent">Search Torrents</NavLink></NavItem>
-        <NavItem><NavLink href="/api/stremio/manifest.json" target='_blank'></NavLink></NavItem>
-    </Nav>
+        <Nav>
+            <NavItem><NavLink href="/search/web">Search Web</NavLink></NavItem>
+            <NavItem><NavLink href="/search/torrent">Search Torrents</NavLink></NavItem>
+            <NavItem><NavLink href="/api/stremio/manifest.json" target='_blank'>Stremio</NavLink></NavItem>
+        </Nav>
+    </Navbar>
 
     <ForkMeBanner url="https://github.com/lucasew/cf-torrent"/>
     <Container>
