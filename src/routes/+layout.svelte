@@ -1,7 +1,11 @@
 <script lang='ts'>
-    import { Container, Nav, Navbar, NavbarBrand, NavItem, NavLink, Styles } from 'sveltestrap';
+	import { navigating } from '$app/stores';
+    import { Container, Nav, Navbar, NavbarBrand, NavItem, NavLink, Progress, Styles } from 'sveltestrap';
     import ForkMeBanner from '../components/ForkMeBanner.svelte';
+
 </script>
+
+<Progress striped={$navigating} animated={$navigating} value={100} style="border-radius: 0" />
 
 <Styles />
 
