@@ -11,7 +11,7 @@ let adapters = [
 ]
 
 if (enableWorkers) {
-	adapters.append(workersAdapter())
+	adapters.push(workersAdapter())
 }
 
 import { vitePreprocess } from '@sveltejs/kit/vite';
