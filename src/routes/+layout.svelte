@@ -12,7 +12,7 @@
 <Container>
     <Navbar>
         <NavbarBrand><b>cf-torrent</b></NavbarBrand>
-        <Nav>
+        <Nav style="z-index: 2">
             <NavItem><NavLink href="/search/web">Search Web</NavLink></NavItem>
             <NavItem><NavLink href="/search/torrent">Search Torrents</NavLink></NavItem>
             <NavItem><NavLink href="/api/stremio/manifest.json" target='_blank'>Stremio</NavLink></NavItem>
