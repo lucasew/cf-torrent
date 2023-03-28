@@ -1,21 +1,15 @@
 import { fetchTorrentsInLinks } from "$lib/fetchTorrentsInLinks"
 import { duckduckgo, google } from "$lib/search"
+import { error } from "@sveltejs/kit"
 
-export async function GET({url}) {
+export async function load({url}) {
     const parsedURL = new URL(url)
     const params = parsedURL.searchParams
     const use_google = params.get('use_google')
     const use_duckduckgo = params.get('use_duckduckgo')
     const query = params.get('query')
     if (!query) {
-        return new Response(JSON.stringify({
-            error: 'no query',
-        }), {
-            status: 400,
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+        throw error(400, 'no query')
     }
     let promises = []
     if (use_google) {
@@ -25,11 +19,9 @@ export async function GET({url}) {
         promises.push(duckduckgo(query))
     }
     const siteLinks = (await Promise.all(promises)).flat()
-    return new Response(JSON.stringify({
+    return {
         links: await fetchTorrentsInLinks(siteLinks)
-    }), {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }) 
+    }
 }
+
+

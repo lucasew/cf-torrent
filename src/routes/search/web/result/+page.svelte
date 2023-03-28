@@ -13,19 +13,12 @@
     let enable_filter = false;
 </script>
 
-<Breadcrumb>
-    <BreadcrumbItem active>Home</BreadcrumbItem>
-    <BreadcrumbItem active>Search Web</BreadcrumbItem>
-    <BreadcrumbItem active>{$page.url.searchParams.get('query')}</BreadcrumbItem>
-</Breadcrumb>
-
-
+<hr>
 
 <Input bind:checked={enable_filter} type='checkbox' label="Enable quality filter" />
 
 <hr>
 
-<p>Error: {data.error}</p>
 {#if links && links.length > 0}
     <ul>
     {#each links as link}
