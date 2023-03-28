@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { page } from "$app/stores";
 	import { rankLinks } from "$lib/rankLinks";
-	import { Breadcrumb, BreadcrumbItem, Input } from "sveltestrap";
+	import { Input } from "sveltestrap";
 
     export let data: {
         error?: string

@@ -4,6 +4,9 @@
 	import { Breadcrumb, BreadcrumbItem, Button, Form, FormGroup, Input } from "sveltestrap";
 
     let url = $page.url;
+    let query = $page.url.searchParams.get('query');
+    let use_google = !!$page.url.searchParams.get('use_google')
+    let use_duckduckgo = !!$page.url.searchParams.get('use_duckduckgo')
 
     function handleFormSubmit(e: SubmitEvent) {
         e.preventDefault()
@@ -11,14 +14,12 @@
         if (!newURL.href.endsWith('/result')) {
             newURL.href += "/result"
         }
-        newURL.searchParams.set('query', query)
+        newURL.searchParams.set('query', String(query))
         if (use_google) newURL.searchParams.set('use_google', '1')
         if (use_duckduckgo) newURL.searchParams.set('use_duckduckgo', '1')
         goto(newURL)
     }
-    let query = $page.url.searchParams.get('query');
-    let use_google = !!$page.url.searchParams.get('use_google')
-    let use_duckduckgo = !!$page.url.searchParams.get('use_duckduckgo')
+    
 </script>
 <Breadcrumb>
     <BreadcrumbItem active>Home</BreadcrumbItem>
