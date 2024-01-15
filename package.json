@@ -5,6 +5,7 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
+		"postinstall": "patch-package",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -38,6 +39,7 @@
 	"type": "module",
 	"dependencies": {
 		"he": "^1.2.0",
+		"patch-package": "^8.0.0",
 		"sveltestrap": "^5.10.0"
 	}
 }
