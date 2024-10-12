@@ -1,7 +1,10 @@
 
 
 name: "Deploy container if tagged commit"
-on: [push]
+on:
+  push:
+    tags:
+      - 'v*'
 jobs:
   ci-and-release:
     name: "CI and release"
@@ -28,6 +31,6 @@ jobs:
           TAG: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
         if: github.ref_type == 'tag'
         run: |
-          docker build . -t cf-torrent
+          docker build . -t cf-torrent:${{ github.ref_name }}
           docker tag $( docker image ls -f reference=cf-torrent --format '{{.ID}}' ) ${{ env.TAG }}:$( docker image ls -f reference=cf-torrent --format '{{.Tag}}' )
           docker push ${{ env.TAG }}:$( docker image ls -f reference=cf-torrent --format '{{.Tag}}' )
