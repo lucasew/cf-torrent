@@ -1,6 +1,6 @@
 
 
-name: "CI and deployment"
+name: "Deploy container if tagged commit"
 on: [push]
 jobs:
   ci-and-release:
@@ -17,8 +17,6 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v1
-      - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
       - name: Login to registry
         uses: docker/login-action@v3
         with:
