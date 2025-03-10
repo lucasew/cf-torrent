@@ -26,7 +26,7 @@ old_hash = findings[0].strip()
 
 PACKAGE_NIX.write_text(original_text.replace(old_hash, EMPTY_HASH))
 
-drvPath = subprocess.run(['nix', 'eval', str(PACKAGE_NIX.parent) + "#default.drvPath", '--raw'], stdout=subprocess.PIPE).stdout.decode('utf-8')
+drvPath = subprocess.run(['nix-instantiate', "default.nix"], stdout=subprocess.PIPE).stdout.decode('utf-8')
 print('drvPath', drvPath)
 
 build_log = subprocess.run(['nix-store', '-r', drvPath], stderr=subprocess.PIPE).stderr.decode('utf-8')
@@ -37,4 +37,4 @@ assert len(findings) == 1
 new_hash = findings[0].strip()
 PACKAGE_NIX.write_text(original_text.replace(old_hash, new_hash))
 
-subprocess.run(["nix", "build", "-L", "--no-link", str(PACKAGE_NIX.parent)])
+subprocess.run(["nix-build", "--no-link", str(PACKAGE_NIX.parent)])
