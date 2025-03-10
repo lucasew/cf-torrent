@@ -1,0 +1,67 @@
+name: Update dependencies
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 2 * * 6' # saturday 2am
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  dep_update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Install Nix
+        uses: cachix/install-nix-action@v26
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Regenerate package-lock.json
+        run: |
+          rm package-lock.json
+          npm install
+
+      - name: Update Nix hashes
+        run: ./.github/update-nix-hashes.py
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          title: "Update package dependencies + tidy"
+          body: |
+            This is a change initiated automatically by a
+            GitHub Action that updates the projects dependencies to their latest
+            minor and patch-level versions. This lets us stay up to date
+            incrementally so that updates are less effort to get merged compared
+            to large monolithic updates, and gets us security updates more
+            expediently.
+
+            If the build passes, you are probably A-OK to merge and deploy this.
+            If not, try to dig into what's not working and see if you can fix it
+            so that the dep train stays on its rails.
+
+            Note that although minor/patch level changes are handled
+            automatically, notably major version changes like you'd find in
+            stripe-go are not and those upgrades need to be performed manually.
+            That should theoretically not be a problem if fixes are backported
+            to all previous majors, but in practice they are often not, so it's
+            worthwhile to occasionally look for new majors and integrate them.
+          branch: "dep-update"
+          commit-message: |
+            Update package dependencies + tidy
+
+            Automatic update to the project's package dependencies initiated by an
+            automatic GitHub Action running on cron. Keeps upgrades less of a
+            monolithic task and lets security-related patches trickle in more
+            quickly.
+          author: "A helpful machine <actions@github.com>"
+          committer: "A helpful machine <actions@github.com>"
+          delete-branch: true
+          reviewers: |
+            lucasew
