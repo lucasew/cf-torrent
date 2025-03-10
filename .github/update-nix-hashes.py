@@ -29,7 +29,7 @@ PACKAGE_NIX.write_text(original_text.replace(old_hash, EMPTY_HASH))
 drvPath = subprocess.run(['nix-instantiate', "default.nix"], stdout=subprocess.PIPE).stdout.decode('utf-8')
 print('drvPath', drvPath)
 
-build_log = subprocess.run(['nix-store', '-r', drvPath], stderr=subprocess.PIPE).stderr.decode('utf-8')
+build_log = subprocess.run(['nix-store', '-r', drvPath], stdout=subprocess.PIPE).stdout.decode('utf-8')
 
 findings = NEW_HASH_FROM_LOGS_RE.findall(build_log)
 print('[DEBUG] findings new', findings)
