@@ -31,7 +31,7 @@ print('drvPath', drvPath)
 
 build_proc = subprocess.run(['nix-store', '-r', drvPath.strip()], stdout=subprocess.PIPE, stderr=subprocess.PIPE) 
 print(build_proc)
-build_log = build_proc.stdout.decode('utf-8')
+build_log = build_proc.stderr.decode('utf-8')
 
 findings = NEW_HASH_FROM_LOGS_RE.findall(build_log)
 print('[DEBUG] findings new', findings)
