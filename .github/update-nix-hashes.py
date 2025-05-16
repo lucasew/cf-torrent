@@ -39,4 +39,4 @@ assert len(findings) == 1
 new_hash = findings[0].strip()
 PACKAGE_NIX.write_text(original_text.replace(old_hash, new_hash))
 
-subprocess.run(["nix-build", "--no-link", str(PACKAGE_NIX.parent)])
+subprocess.run(["nix-build", "--no-link", PACKAGE_NIX.parent])
