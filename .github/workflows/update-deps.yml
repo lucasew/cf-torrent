@@ -31,7 +31,7 @@ jobs:
         run: ./.github/update-nix-hashes.py
 
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v4
+        uses: peter-evans/create-pull-request@v7
         with:
           title: "Update package dependencies + tidy"
           body: |
