@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { rankLinks } from "$lib/rankLinks";
-	import { Input } from "sveltestrap";
+	import { Input } from "@sveltestrap/sveltestrap";
 
     export let data: {
         error?: string

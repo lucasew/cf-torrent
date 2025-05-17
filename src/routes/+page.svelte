@@ -1,5 +1,5 @@
 <script>
-	import { Breadcrumb, BreadcrumbItem } from "sveltestrap";
+	import { Breadcrumb, BreadcrumbItem } from "@sveltestrap/sveltestrap";
 
 </script>
 <Breadcrumb>

@@ -1,6 +1,6 @@
 <script lang='ts'>
 	import { navigating } from '$app/stores';
-    import { Container, Nav, Navbar, NavbarBrand, NavItem, NavLink, Progress, Styles } from 'sveltestrap';
+    import { Container, Nav, Navbar, NavbarBrand, NavItem, NavLink, Progress, Styles } from '@sveltestrap/sveltestrap';
     import ForkMeBanner from '../components/ForkMeBanner.svelte';
 
 </script>

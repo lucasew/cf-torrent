@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Card, CardBody, CardFooter, CardHeader, CardSubtitle, CardTitle } from "sveltestrap";
+	import { Button, Card, CardBody, CardFooter, CardHeader, CardSubtitle, CardTitle } from "@sveltestrap/sveltestrap";
 
     export let torrent: string
 

@@ -1,7 +1,7 @@
 <script lang='ts'>
 	import { goto } from "$app/navigation";
 	import { page } from "$app/stores";
-	import { Breadcrumb, BreadcrumbItem, Button, Form, FormGroup, Input } from "sveltestrap";
+	import { Breadcrumb, BreadcrumbItem, Button, Form, FormGroup, Input } from "@sveltestrap/sveltestrap";
 
     let url = $page.url;
     let query = $page.url.searchParams.get('query');
