@@ -44,7 +44,7 @@ export async function duckduckgo(query: string): Promise<SearchResult[]> {
 }
 
 // Placeholder Yandex search: URL and regex to extract links
-const REGEX_YANDEX_MATCH_URL = /url=([^&\"]*)/g
+const REGEX_YANDEX_MATCH_URL = /href="(.*?)"/g
 export async function yandex(query: string): Promise<SearchResult[]> {
   const response = await fetch(
     `https://yandex.com/search/?text=${encodeURIComponent(query)}`,
