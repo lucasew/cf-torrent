@@ -1,11 +1,11 @@
 import { fetchTorrentsInLinks } from "$lib/fetchTorrentsInLinks"
 import { getTitleFromIMDB } from "$lib/getTitleFromIMDB"
-import { duckduckgo, google } from "$lib/search"
+import { duckduckgo, google, yandex } from "$lib/search"
 
 export async function GET({params, url}) {
     const title = await getTitleFromIMDB(params.name)
     const siteLinks = (await Promise.all(
-        [google, duckduckgo].map(f => f(`${title} torrent`))
+        [google, duckduckgo, yandex].map(f => f(`${title} torrent`))
     )).flat()
     const links = await fetchTorrentsInLinks(siteLinks)
     return new Response(JSON.stringify({
