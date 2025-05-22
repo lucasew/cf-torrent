@@ -18,7 +18,11 @@ export async function load({url}) {
     if (use_duckduckgo) {
         promises.push(duckduckgo(query))
     }
-    const siteLinks = (await Promise.all(promises)).flat()
+    // flatten SearchResult[] to array of URLs
+    const siteLinks = (await Promise.all(promises))
+        .flat()
+        // if SearchResult objects, extract link, otherwise it's string
+        .map((r: any) => (typeof r === 'string' ? r : r.link));
     return {
         links: await fetchTorrentsInLinks(siteLinks)
     }
