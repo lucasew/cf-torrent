@@ -27,8 +27,8 @@
   <ul>
     {#each links as result}
       <li style="margin-bottom: 0.5rem; display: flex; align-items: center;">
-        <Badge color="secondary" class="me-2">{result.source}</Badge>
         <a href={result.link} target="_blank" rel="noopener noreferrer">{result.link}</a>
+        <Badge color="secondary" class="ms-2">{result.source}</Badge>
       </li>
     {/each}
   </ul>
