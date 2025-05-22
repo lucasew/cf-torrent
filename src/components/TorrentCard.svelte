@@ -1,16 +1,18 @@
 <script lang="ts">
 	import { Button, Card, CardBody, CardFooter, CardHeader, CardSubtitle, CardTitle } from "@sveltestrap/sveltestrap";
 
+    import SourceBadge from './SourceBadge.svelte'
     export let torrent: string
+    export let source: string
 
     const torrentURL = new URL(torrent)
     console.log(torrentURL)
-
 </script>
 <Card class='mb-3'>
-    <CardHeader>
-        <CardTitle>{torrentURL.searchParams.get('dn') || '(NO NAME)'}</CardTitle>
-    </CardHeader>
+  <CardHeader class="d-flex align-items-center">
+    <SourceBadge source={source} />
+    <CardTitle class="mb-0">{torrentURL.searchParams.get('dn') || '(NO NAME)'}</CardTitle>
+  </CardHeader>
     <CardBody>
         <CardSubtitle><b>Trackers</b></CardSubtitle>
         <ul>
