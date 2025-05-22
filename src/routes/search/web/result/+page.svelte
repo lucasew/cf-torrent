@@ -1,6 +1,6 @@
 <script lang="ts">
   import { rankLinks } from "$lib/rankLinks";
-  import { SearchResult } from "$lib/search";
+  import type { SearchResult } from "$lib/search";
   import { Badge, Input } from "@sveltestrap/sveltestrap";
 
   export let data: { links?: SearchResult[] };
