@@ -2,6 +2,6 @@
 pkgs.mkShell {
   buildInputs = with pkgs; [
     wrangler
-    nodejs
+    nodejs_22
   ];
 }
