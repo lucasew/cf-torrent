@@ -1,6 +1,5 @@
 name = "cf-torrent"
 main = "./.cloudflare/worker.js"
-site.bucket = "./.cloudflare/public"
 
 workers_dev = true
 compatibility_date = "2022-02-02"
