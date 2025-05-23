@@ -1,6 +1,6 @@
 import autoAdapter from '@sveltejs/adapter-auto';
 import nodeAdapter from '@sveltejs/adapter-node';
-import workersAdapter from '@sveltejs/adapter-cloudflare-workers';
+import workersAdapter from '@sveltejs/adapter-cloudflare';
 import multiAdapter from '@macfja/svelte-multi-adapter';
 
 const enableWorkers = true;
