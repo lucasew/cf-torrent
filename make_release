@@ -28,7 +28,7 @@ printf "%s" "$VERSION" > version.txt
 git add -A
 git commit -sm "bump to $VERSION"
 if [[ ! -v NO_TAG ]]; then
-	git tag "$VERSION"
+	git tag "v$VERSION"
 	git push --tag
 fi
 git push

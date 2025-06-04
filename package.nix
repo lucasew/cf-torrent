@@ -1,9 +1,8 @@
-{ buildNpmPackage, nodejs, lib }:
-let
-  packageJSON = builtins.fromJSON (builtins.readFile ./package.json);
-in buildNpmPackage {
-  pname = packageJSON.name;
-  inherit (packageJSON) version;
+{ self, buildNpmPackage, nodejs, lib }:
+
+buildNpmPackage {
+  pname = "cf-torrent";
+  version = "${builtins.readFile ./version.txt}-${self.shortRev or self.dirtyShortRev or "rev"}";
 
   src = ./.;
 
