@@ -1,0 +1,105 @@
+name: Autorelease
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+  workflow_dispatch:
+    inputs:
+      new_version:
+        description: 'New tag version'
+        default: 'patch'
+  schedule:
+    - cron: '0 2 * * 6' # saturday 2am
+jobs:
+  autorelease:
+    env:
+      REGISTRY: ghcr.io
+      IMAGE_NAME: ${{ github.repository }}
+      USERNAME: ${{ github.actor }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+      attestations: write
+      id-token: write
+      pull-requests: write
+    steps:
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - name: Login to registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ env.USERNAME }}
+          password: ${{ github.token }}
+
+      - uses: actions/checkout@v4
+      - name: Setup git config
+        run: |
+          git config user.name actions-bot
+          git config user.email actions-bot@users.noreply.github.com
+
+      - name: Update Nix flake
+        run: nix flake update
+
+      - name: Update Nix hashes
+        run: ./.github/update-nix-hashes.py
+
+      - name: Create Pull Request if there is new stuff from updaters
+        uses: peter-evans/create-pull-request@v7
+        id: pr_create
+        with:
+          commit-message: Updater script changes
+          branch: updater-bot
+          delete-branch: true
+          title: 'Updater: stuff changed'
+          body: |
+            Changes caused from update scripts
+
+      - name: Stop if a pull request was created
+        env:
+          PR_NUMBER: ${{ steps.pr_create.outputs.pull-request-number }}
+        run: |
+          if [[ ! -z "$PR_NUMBER" ]]; then
+            echo "The update scripts changed something and a PR was created. Giving up deploy." >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+      - name: Try to build it
+        run: nux build .#
+
+      - name: Make release if everything looks right
+        env:
+          NEW_VERSION: ${{ github.event.inputs.new_version }}
+        run: |
+          if [[ ! -z "$NEW_VERSION" ]]; then
+            NO_TAG=1 ./make_release "$NEW_VERSION"
+            echo "New version: $(cat version.txt)" >> $GITHUB_STEP_SUMMARY
+            echo "RELEASE_VERSION=$(cat version.txt)" >> $GITHUB_ENV
+          fi
+
+      - name: Create relase
+        if: env.RELEASE_VERSION != ''
+        id: release
+        uses: elgohr/Github-Release-Action@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          prerelease: false
+          tag: v${{ env.RELEASE_VERSION }}
+          title: Release ${{ env.RELEASE_VERSION }}
+
+      - name: 'Build and publish container'
+        env:
+          TAG: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        if: env.RELEASE_VERSION != ''
+        run: |
+          VERSION="$(cat version.txt)"
+          docker build -t "$TAG:$VERSION" .
+          docker tag "$TAG:$VERSION" "$TAG:latest"
+          docker push "$TAG:$VERSION"
+          docker push "$TAG:latest"
