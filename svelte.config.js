@@ -7,7 +7,8 @@ const enableWorkers = true;
 
 let adapters = [
 	nodeAdapter(),
-	autoAdapter()
+	autoAdapter(),
+	workersAdapter()
 ]
 
 if (enableWorkers) {
