@@ -1,4 +1,4 @@
-{ self, buildNpmPackage, nodejs, lib }:
+{ self ? {}, buildNpmPackage, nodejs, lib }:
 
 buildNpmPackage {
   pname = "cf-torrent";
