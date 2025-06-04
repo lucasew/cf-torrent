@@ -85,7 +85,7 @@ jobs:
       - name: Create relase
         if: env.RELEASE_VERSION != ''
         id: release
-        uses: elgohr/Github-Release-Action@v5
+        uses: elgohr/Github-Release-Action@20240816194204
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
