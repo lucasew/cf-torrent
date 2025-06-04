@@ -70,7 +70,7 @@ jobs:
             exit 1
           fi
       - name: Try to build it
-        run: nux build .#
+        run: nix build .#
 
       - name: Make release if everything looks right
         env:
