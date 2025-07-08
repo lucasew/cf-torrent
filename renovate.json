@@ -5,5 +5,25 @@
   ],
   "nix": {
     "enabled": true
-  }
+  },
+  "lockFileMaintenance": {
+    "enabled": false,
+    "recreateWhen": "always",
+    "automergeType": "pr",
+    "automerge": true
+  },
+  "packageRules": [
+    {
+      "matchDepTypes": [
+        "devDependencies"
+      ],
+      "automerge": true
+    },
+    {
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "automerge": true
+    }
+  ]
 }
