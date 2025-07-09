@@ -6,7 +6,7 @@ buildNpmPackage {
 
   src = ./.;
 
-  npmDepsHash = "sha256-LJ8aYsuhS+RdeSFGmJ1ljnjw6irrAU99ZFCAUzP68j8=";
+  npmDepsHash = "sha256-bVol3lx9wfEuD/EW1Ivg9qyRgdfOSNtcubh8UPO5CiA=";
 
   configurePhase = ''
     substituteInPlace svelte.config.js \
