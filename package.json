@@ -37,7 +37,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@sveltejs/vite-plugin-svelte": "^5.0.3",
+		"@sveltejs/vite-plugin-svelte": "^6.0.0",
 		"@sveltestrap/sveltestrap": "^7.1.0",
 		"he": "^1.2.0",
 		"patch-package": "^8.0.0"
