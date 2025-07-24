@@ -7,7 +7,7 @@
     "enabled": true
   },
   "lockFileMaintenance": {
-    "enabled": false,
+    "enabled": true,
     "recreateWhen": "always",
     "automergeType": "pr",
     "automerge": true
