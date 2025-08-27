@@ -47,6 +47,9 @@ jobs:
       - name: Update Nix flake
         run: nix flake update
 
+      - name: Update package-lock.json
+        run: npm install
+
       - name: Update Nix hashes
         run: ./.github/update-nix-hashes.py
 
