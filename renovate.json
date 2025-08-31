@@ -25,6 +25,21 @@
       "matchDepTypes": [
         "devDependencies"
       ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "automerge": true
+    },
+    {
+      "matchDepNames": [
+        "@sveltekit/kit",
+        "svelte"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "automerge": true
     },
     {
