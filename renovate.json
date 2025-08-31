@@ -16,6 +16,7 @@
     {
       "matchPackageNames": [
         "@cloudflare/workers-types",
+        "@cloudflare/workerd-linux-64",
         "wrangler"
       ],
       "automerge": true,
