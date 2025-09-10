@@ -27,10 +27,6 @@ jobs:
       id-token: write
       pull-requests: write
     steps:
-      - name: Install Nix
-        uses: cachix/install-nix-action@v31
-        with:
-          nix_path: nixpkgs=channel:nixos-unstable
       - name: Login to registry
         uses: docker/login-action@v3
         with:
@@ -46,14 +42,8 @@ jobs:
           git config user.name actions-bot
           git config user.email actions-bot@users.noreply.github.com
 
-      - name: Update Nix flake
-        run: nix flake update
-
       - name: Update bun.lock
         run: bun install
-
-      - name: Update Nix hashes
-        run: ./.github/update-nix-hashes.py
 
       - name: Create Pull Request if there is new stuff from updaters
         uses: peter-evans/create-pull-request@v7
@@ -74,8 +64,6 @@ jobs:
             echo "The update scripts changed something and a PR was created. Giving up deploy." >> $GITHUB_STEP_SUMMARY
             exit 1
           fi
-      - name: Try to build it
-        run: nix build .#
 
       - name: Make release if everything looks right
         env:
