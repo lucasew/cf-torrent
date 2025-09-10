@@ -39,6 +39,8 @@ jobs:
           password: ${{ github.token }}
 
       - uses: actions/checkout@v5
+      - uses: jdx/mise-action@v3
+      
       - name: Setup git config
         run: |
           git config user.name actions-bot
