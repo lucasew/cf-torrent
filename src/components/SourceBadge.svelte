@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { Badge } from '@sveltestrap/sveltestrap'
   // source name, e.g., 'Google', 'DuckDuckGo', 'Yandex'
   export let source: string
-  // map source to badge color
+  // map source to badge color (DaisyUI classes)
   const colors: Record<string, string> = {
-    Google: 'primary',
-    DuckDuckGo: 'info',
-    Yandex: 'warning'
+    Google: 'badge-primary',
+    DuckDuckGo: 'badge-info',
+    Yandex: 'badge-warning'
   }
-  const color = colors[source] ?? 'secondary'
+  const colorClass = colors[source] ?? 'badge-secondary'
 </script>
-<Badge color={color} class="me-1">{source}</Badge>
+
+<span class="badge {colorClass} mr-1">{source}</span>
