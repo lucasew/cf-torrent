@@ -26,6 +26,7 @@
                         <li><a href="/search/web">Search Web</a></li>
                         <li><a href="/search/torrent">Search Torrents</a></li>
                         <li><a href="/api/stremio/manifest.json" target="_blank">Stremio</a></li>
+                        <li><ThemeToggle /></li>
                     </ul>
                 </details>
                 <a href="/" class="btn btn-ghost text-xl font-bold">cf-torrent</a>
@@ -35,10 +36,11 @@
                     <li><a href="/search/web">Search Web</a></li>
                     <li><a href="/search/torrent">Search Torrents</a></li>
                     <li><a href="/api/stremio/manifest.json" target="_blank">Stremio</a></li>
+                    <li><ThemeToggle /></li>
                 </ul>
             </div>
             <div class="navbar-end">
-                <ThemeToggle />
+                <!-- Empty -->
             </div>
         </div>
 
