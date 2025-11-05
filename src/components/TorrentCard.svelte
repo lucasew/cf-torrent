@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { Button, Card, CardBody, CardFooter, CardHeader, CardSubtitle, CardTitle } from "@sveltestrap/sveltestrap";
-
     import SourceBadge from './SourceBadge.svelte'
     export let torrent: string
     export let source: string
@@ -8,26 +6,36 @@
     const torrentURL = new URL(torrent)
     console.log(torrentURL)
 </script>
-<Card class='mb-3'>
-  <CardHeader class="d-flex align-items-center">
-    <SourceBadge source={source} />
-    <CardTitle class="mb-0">{torrentURL.searchParams.get('dn') || '(NO NAME)'}</CardTitle>
-  </CardHeader>
-    <CardBody>
-        <CardSubtitle><b>Trackers</b></CardSubtitle>
-        <ul>
-            {#each torrentURL.searchParams.getAll('tr') || [] as tracker}
-                <li>{tracker}</li>
-            {/each}
+
+<div class="card bg-base-100 shadow-xl mb-3">
+  <div class="card-body">
+    <div class="flex items-center gap-2 mb-2">
+      <SourceBadge {source} />
+      <h2 class="card-title">{torrentURL.searchParams.get('dn') || '(NO NAME)'}</h2>
+    </div>
+
+    <div class="space-y-2">
+      <div>
+        <h3 class="font-bold">Trackers</h3>
+        <ul class="list-disc list-inside text-sm">
+          {#each torrentURL.searchParams.getAll('tr') || [] as tracker}
+            <li class="truncate">{tracker}</li>
+          {/each}
         </ul>
-        <CardSubtitle><b>Infohash</b></CardSubtitle>
-        <ul>
-            <li>
-                {torrentURL.searchParams.get('xt')?.replace('urn:', '').replace('btih:', '')}
-            </li>
+      </div>
+
+      <div>
+        <h3 class="font-bold">Infohash</h3>
+        <ul class="list-disc list-inside text-sm">
+          <li class="truncate">
+            {torrentURL.searchParams.get('xt')?.replace('urn:', '').replace('btih:', '')}
+          </li>
         </ul>
-    </CardBody>
-    <CardFooter>
-        <Button href="{torrent}" target='_blank'>Download</Button>
-    </CardFooter>
-</Card>
+      </div>
+    </div>
+
+    <div class="card-actions justify-end mt-4">
+      <a href={torrent} target="_blank" class="btn btn-primary">Download</a>
+    </div>
+  </div>
+</div>
