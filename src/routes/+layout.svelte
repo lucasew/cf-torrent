@@ -14,7 +14,9 @@
     <div class="container mx-auto px-4 flex-1 flex flex-col">
         <!-- Navbar -->
         <div class="navbar bg-base-100">
-            <div class="navbar-start">
+            <div class="navbar-start gap-2">
+                <a href="/" class="btn btn-ghost text-xl font-bold">cf-torrent</a>
+                <ThemeToggle />
                 <!-- Mobile menu dropdown -->
                 <details class="dropdown lg:hidden">
                     <summary class="btn btn-ghost list-none">
@@ -26,17 +28,14 @@
                         <li><a href="/search/web">Search Web</a></li>
                         <li><a href="/search/torrent">Search Torrents</a></li>
                         <li><a href="/api/stremio/manifest.json" target="_blank">Stremio</a></li>
-                        <li><ThemeToggle /></li>
                     </ul>
                 </details>
-                <a href="/" class="btn btn-ghost text-xl font-bold">cf-torrent</a>
             </div>
             <div class="navbar-center hidden lg:flex">
                 <ul class="menu menu-horizontal px-1">
                     <li><a href="/search/web">Search Web</a></li>
                     <li><a href="/search/torrent">Search Torrents</a></li>
                     <li><a href="/api/stremio/manifest.json" target="_blank">Stremio</a></li>
-                    <li><ThemeToggle /></li>
                 </ul>
             </div>
             <div class="navbar-end">
