@@ -3,6 +3,8 @@ node_modules
 /build
 /.svelte-kit
 /package
+project.inlang/cache
+project.inlang/project_id
 .env
 .env.*
 !.env.example
