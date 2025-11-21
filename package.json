@@ -14,9 +14,9 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
-		"@inlang/paraglide-js": "2.5.0",
 		"@cloudflare/kv-asset-handler": "^0.4.0",
 		"@cloudflare/workers-types": "^4.20250517.0",
+		"@inlang/paraglide-js": "2.5.0",
 		"@macfja/svelte-multi-adapter": "^1.0.2",
 		"@sveltejs/adapter-auto": "^7.0.0",
 		"@sveltejs/adapter-cloudflare": "^7.0.3",
@@ -43,6 +43,7 @@
 	"type": "module",
 	"dependencies": {
 		"@sveltejs/vite-plugin-svelte": "^6.0.0",
+		"@tailwindcss/postcss": "^4.1.17",
 		"he": "^1.2.0",
 		"patch-package": "^8.0.0"
 	}
