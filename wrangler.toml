@@ -4,6 +4,8 @@ main = ".svelte-kit/cloudflare/_worker.js"
 workers_dev = true
 compatibility_date = "2022-02-02"
 
+compatibility_flags = [ "nodejs_compat" ]
+
 [build]
 command = "npm run build"
 
