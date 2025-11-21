@@ -1,15 +1,21 @@
+<script lang="ts">
+	import * as m from '$lib/paraglide/messages';
+</script>
+
 <div class="breadcrumbs text-sm">
-    <ul>
-        <li>Home</li>
-    </ul>
+	<ul>
+		<li>{m.home_header_title()}</li>
+	</ul>
 </div>
 
-<h1 class="text-4xl font-bold mb-4">Welcome!</h1>
+<h1 class="text-4xl font-bold mb-4">{m.home_header_welcome()}</h1>
 
 <div class="prose max-w-none">
-    <p>This is a simple Cloudflare Worker/Webapp to help people cut the bullshit when searching for torrents.</p>
-    <p>There are a lot of scammy sites that promise to give the gold but just directs users through a maze of link protectors and things like that. This app works by inspecting if the gold is already provided by the site. If not just skips and checks the next one.</p>
-    <p>It already skips common sites that appear in the searches but are not relevant to the objective.</p>
-    <p>What you get is mostly pure gold.</p>
-    <p>It may not show much results or may not find that much results because of <a target="_blank" href="https://developers.cloudflare.com/workers/platform/limits/" class="link link-primary">cloudflare workers subrequest limitations</a>.</p>
+	<p>{@html m.home_header_description()}</p>
+	<p>{@html m.home_header_scammy_sites_description()}</p>
+	<p>{@html m.home_header_skip_sites_description()}</p>
+	<p>{@html m.home_header_pure_gold_description()}</p>
+	<p>
+		{@html m.home_header_cloudflare_limits_description()}
+	</p>
 </div>
