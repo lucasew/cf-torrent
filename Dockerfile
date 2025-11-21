@@ -1,6 +1,7 @@
 FROM oven/bun:1 AS builder
 WORKDIR /app
 COPY package.json bun.lock .
+COPY project.inlang .
 RUN bun install --frozen-lockfile
 COPY . .
 RUN bun run build
