@@ -110,6 +110,7 @@ jobs:
       if: github.event_name != 'pull_request' && env.RELEASE_VERSION != ''
       env:
         TAG: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        VERSION: ${{ env.RELEASE_VERSION }}
       run: |
         docker tag "$TAG:$VERSION" "$TAG:latest"
         docker push "$TAG:$VERSION"
