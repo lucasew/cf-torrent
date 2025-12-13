@@ -13,7 +13,7 @@
       "devDependencies": {
         "@cloudflare/kv-asset-handler": "^0.4.0",
         "@cloudflare/workers-types": "^4.20250517.0",
-        "@inlang/paraglide-js": "2.6.0",
+        "@inlang/paraglide-js": "2.7.0",
         "@macfja/svelte-multi-adapter": "^1.0.2",
         "@sveltejs/adapter-auto": "^7.0.0",
         "@sveltejs/adapter-cloudflare": "^7.0.3",
@@ -178,7 +178,7 @@
 
     "@img/sharp-win32-x64": ["@img/sharp-win32-x64@0.33.5", "", { "os": "win32", "cpu": "x64" }, "sha512-MpY/o8/8kj+EcnxwvrP4aTJSWw/aZ7JIGR4aBeZkZw5B7/Jn+tY9/VNwtcoGmdT7GfggGIU4kygOMSbYnOrAbg=="],
 
-    "@inlang/paraglide-js": ["@inlang/paraglide-js@2.6.0", "", { "dependencies": { "@inlang/recommend-sherlock": "0.2.1", "@inlang/sdk": "2.4.9", "commander": "11.1.0", "consola": "3.4.0", "json5": "2.2.3", "unplugin": "^2.1.2", "urlpattern-polyfill": "^10.0.0" }, "bin": { "paraglide-js": "bin/run.js" } }, "sha512-TqbgvLD2TrOgyGQULMCQvgOjHtKCFrILtCWa+ljRhVvtbve4yq4NeX+6rNKIpxxEQLraHMQRZSuP4FNSyYX5BA=="],
+    "@inlang/paraglide-js": ["@inlang/paraglide-js@2.7.0", "", { "dependencies": { "@inlang/recommend-sherlock": "0.2.1", "@inlang/sdk": "2.4.9", "commander": "11.1.0", "consola": "3.4.0", "json5": "2.2.3", "unplugin": "^2.1.2", "urlpattern-polyfill": "^10.0.0" }, "bin": { "paraglide-js": "bin/run.js" } }, "sha512-R03uEk8C3p3rP1uRXvaVcbA7DClGWdQDmBhWF5B3tLgAwZGPRpCuo8iSie55cErVvZpydC+DLAuZIbrNcojd3w=="],
 
     "@inlang/recommend-sherlock": ["@inlang/recommend-sherlock@0.2.1", "", { "dependencies": { "comment-json": "^4.2.3" } }, "sha512-ckv8HvHy/iTqaVAEKrr+gnl+p3XFNwe5D2+6w6wJk2ORV2XkcRkKOJ/XsTUJbPSiyi4PI+p+T3bqbmNx/rDUlg=="],
 
