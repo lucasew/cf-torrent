@@ -13,7 +13,7 @@
       "devDependencies": {
         "@cloudflare/kv-asset-handler": "^0.4.0",
         "@cloudflare/workers-types": "^4.20250517.0",
-        "@inlang/paraglide-js": "2.7.0",
+        "@inlang/paraglide-js": "2.7.1",
         "@macfja/svelte-multi-adapter": "^1.0.2",
         "@sveltejs/adapter-auto": "^7.0.0",
         "@sveltejs/adapter-cloudflare": "^7.0.3",
@@ -178,11 +178,11 @@
 
     "@img/sharp-win32-x64": ["@img/sharp-win32-x64@0.33.5", "", { "os": "win32", "cpu": "x64" }, "sha512-MpY/o8/8kj+EcnxwvrP4aTJSWw/aZ7JIGR4aBeZkZw5B7/Jn+tY9/VNwtcoGmdT7GfggGIU4kygOMSbYnOrAbg=="],
 
-    "@inlang/paraglide-js": ["@inlang/paraglide-js@2.7.0", "", { "dependencies": { "@inlang/recommend-sherlock": "0.2.1", "@inlang/sdk": "2.4.9", "commander": "11.1.0", "consola": "3.4.0", "json5": "2.2.3", "unplugin": "^2.1.2", "urlpattern-polyfill": "^10.0.0" }, "bin": { "paraglide-js": "bin/run.js" } }, "sha512-R03uEk8C3p3rP1uRXvaVcbA7DClGWdQDmBhWF5B3tLgAwZGPRpCuo8iSie55cErVvZpydC+DLAuZIbrNcojd3w=="],
+    "@inlang/paraglide-js": ["@inlang/paraglide-js@2.7.1", "", { "dependencies": { "@inlang/recommend-sherlock": "0.2.1", "@inlang/sdk": "2.4.10", "commander": "11.1.0", "consola": "3.4.0", "json5": "2.2.3", "unplugin": "^2.1.2", "urlpattern-polyfill": "^10.0.0" }, "bin": { "paraglide-js": "bin/run.js" } }, "sha512-wCpnS9iRTRYMilvWBjB0ndf8+moon+AXz23Uh4wbpQjWhRJyvCytkGFzm7jeqAGggK4v3oeuyjva91TDMS+qhw=="],
 
     "@inlang/recommend-sherlock": ["@inlang/recommend-sherlock@0.2.1", "", { "dependencies": { "comment-json": "^4.2.3" } }, "sha512-ckv8HvHy/iTqaVAEKrr+gnl+p3XFNwe5D2+6w6wJk2ORV2XkcRkKOJ/XsTUJbPSiyi4PI+p+T3bqbmNx/rDUlg=="],
 
-    "@inlang/sdk": ["@inlang/sdk@2.4.9", "", { "dependencies": { "@lix-js/sdk": "0.4.7", "@sinclair/typebox": "^0.31.17", "kysely": "^0.27.4", "sqlite-wasm-kysely": "0.3.0", "uuid": "^10.0.0" } }, "sha512-cvz/C1rF5WBxzHbEoiBoI6Sz6q6M+TdxfWkEGBYTD77opY8i8WN01prUWXEM87GPF4SZcyIySez9U0Ccm12oFQ=="],
+    "@inlang/sdk": ["@inlang/sdk@2.4.10", "", { "dependencies": { "@lix-js/sdk": "0.4.7", "@sinclair/typebox": "^0.31.17", "kysely": "^0.27.4", "sqlite-wasm-kysely": "0.3.0", "uuid": "^10.0.0" } }, "sha512-MLcYSb9ERwvyfxMsMXGjmAYfh6Bn/rkT58ffkibWxbFLiL3ejSdmLGP8Wl7118dMo6nj2PXTcEPzUw+2YPQ62Q=="],
 
     "@jridgewell/gen-mapping": ["@jridgewell/gen-mapping@0.3.13", "", { "dependencies": { "@jridgewell/sourcemap-codec": "^1.5.0", "@jridgewell/trace-mapping": "^0.3.24" } }, "sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA=="],
 
