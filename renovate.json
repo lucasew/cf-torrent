@@ -1,9 +1,6 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
-	"extends": [
-		"config:recommended",
-		"github>lewtec/renovate-config:base"
-	],
+	"extends": ["config:recommended", "github>lewtec/renovate-config:base"],
 	"lockFileMaintenance": {
 		"automerge": true,
 		"automergeType": "pr",
@@ -17,38 +14,21 @@
 		{
 			"automerge": true,
 			"ignoreTests": true,
-			"matchPackageNames": [
-				"@cloudflare/workers-types",
-				"@cloudflare/workerd-linux-64",
-				"wrangler"
-			]
+			"matchPackageNames": ["@cloudflare/workers-types", "@cloudflare/workerd-linux-64", "wrangler"]
 		},
 		{
 			"automerge": true,
-			"matchDepTypes": [
-				"devDependencies"
-			],
-			"matchUpdateTypes": [
-				"minor",
-				"patch"
-			]
+			"matchDepTypes": ["devDependencies"],
+			"matchUpdateTypes": ["minor", "patch"]
 		},
 		{
 			"automerge": true,
-			"matchDepNames": [
-				"@sveltekit/kit",
-				"svelte"
-			],
-			"matchUpdateTypes": [
-				"minor",
-				"patch"
-			]
+			"matchDepNames": ["@sveltekit/kit", "svelte"],
+			"matchUpdateTypes": ["minor", "patch"]
 		},
 		{
 			"automerge": true,
-			"matchUpdateTypes": [
-				"patch"
-			]
+			"matchUpdateTypes": ["patch"]
 		}
 	]
 }
