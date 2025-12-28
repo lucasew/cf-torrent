@@ -1,13 +1,13 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin "daisyui";
 
 /* Remove default summary marker/arrow */
 summary {
-  list-style: none;
+	list-style: none;
 }
 summary::-webkit-details-marker {
-  display: none;
+	display: none;
 }
 summary::marker {
-  display: none;
+	display: none;
 }

@@ -1,2 +1,2 @@
-import he from 'he'
-export const htmlDecode = he.decode
+import he from 'he';
+export const htmlDecode = he.decode;
