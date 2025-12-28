@@ -5,13 +5,10 @@ import multiAdapter from '@macfja/svelte-multi-adapter';
 
 const enableWorkers = true;
 
-let adapters = [
-	nodeAdapter(),
-	autoAdapter()
-]
+let adapters = [nodeAdapter(), autoAdapter()];
 
 if (enableWorkers) {
-	adapters.push(workersAdapter())
+	adapters.push(workersAdapter());
 }
 
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
