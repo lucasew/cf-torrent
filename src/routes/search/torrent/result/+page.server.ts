@@ -12,7 +12,7 @@ export async function load({url}) {
     if (!query) {
         throw error(400, 'no query')
     }
-    let promises = []
+    const promises = []
     if (use_google) {
         promises.push(google(query))
     }

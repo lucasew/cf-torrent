@@ -2,7 +2,7 @@ import { fetchTorrentsInLinks } from '$lib/fetchTorrentsInLinks';
 import { getTitleFromIMDB } from '$lib/getTitleFromIMDB';
 import { duckduckgo, google, yandex } from '$lib/search';
 
-export async function GET({ params, url }) {
+export async function GET({ params }) {
 	const title = await getTitleFromIMDB(params.name);
 	// Search for torrents using Google, DuckDuckGo, and Yandex
 	const siteLinks = (
