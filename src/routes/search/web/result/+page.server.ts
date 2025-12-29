@@ -13,13 +13,13 @@ export async function load({url}) {
     }
     const promises = []
     if (use_google) {
-        promises.push(google(query as string))
+        promises.push(google(query))
     }
     if (use_duckduckgo) {
-        promises.push(duckduckgo(query as string))
+        promises.push(duckduckgo(query))
     }
     if (use_yandex) {
-        promises.push(yandex(query as string))
+        promises.push(yandex(query))
     }
     return {
         links: (await Promise.all(promises)).flat()
