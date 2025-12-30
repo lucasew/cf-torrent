@@ -28,7 +28,7 @@ export async function GET({ params }) {
 		{
 			headers: {
 				'content-type': 'application/json',
-				'Access-Control-Allow-Origin': 'https://v3-cinemeta.strem.io'
+				'Access-Control-Allow-Origin': '*'
 			}
 		}
 	);
