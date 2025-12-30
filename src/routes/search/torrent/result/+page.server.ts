@@ -1,5 +1,5 @@
 import { fetchTorrentsInLinks } from "$lib/fetchTorrentsInLinks"
-import { duckduckgo, google, yandex } from "$lib/search"
+import { duckduckgo, google, yandex, type SearchResult } from "$lib/search"
 import { error } from "@sveltejs/kit"
 
 export async function load({url}) {
@@ -26,7 +26,7 @@ export async function load({url}) {
     const searchResults = (await Promise.all(promises)).flat();
     // For each search result, fetch torrents and tag with source
     const fetched = await Promise.all(
-        searchResults.map(async (r: any) => {
+        searchResults.map(async (r: SearchResult) => {
             const mags = await fetchTorrentsInLinks([r.link]).catch(() => []);
             return mags.map(m => ({ torrent: m, source: r.source }));
         })
