@@ -21,7 +21,7 @@ export function GET() {
 			status: 200,
 			headers: {
 				'content-type': 'application/json',
-				'Access-Control-Allow-Origin': '*'
+				'Access-Control-Allow-Origin': 'https://v3-cinemeta.strem.io'
 			}
 		}
 	);
