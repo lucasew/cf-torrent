@@ -34,7 +34,8 @@ export default [
 			'static',
 			'build',
 			'dist',
-			'.svelte-kit'
+			'.svelte-kit',
+			'src/lib/paraglide/'
 		]
 	}
 ];
