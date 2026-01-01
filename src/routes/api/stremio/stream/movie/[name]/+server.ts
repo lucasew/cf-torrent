@@ -1,8 +1,16 @@
 import { fetchTorrentsInLinks } from '$lib/fetchTorrentsInLinks';
-import { getTitleFromIMDB } from '$lib/getTitleFromIMDB';
+import { getTitleFromIMDB, REGEX_IMDB_ID } from '$lib/getTitleFromIMDB';
 import { duckduckgo, google, yandex } from '$lib/search';
 
 export async function GET({ params }) {
+	if (!REGEX_IMDB_ID.test(params.name)) {
+		return new Response(JSON.stringify({ streams: [] }), {
+			headers: {
+				'content-type': 'application/json',
+				'Access-Control-Allow-Origin': '*'
+			}
+		});
+	}
 	const title = await getTitleFromIMDB(params.name);
 	const siteLinks = (
 		await Promise.all([google, duckduckgo, yandex].map((f) => f(`${title} torrent`)))
