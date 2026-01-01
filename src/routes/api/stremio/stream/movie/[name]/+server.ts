@@ -1,5 +1,6 @@
 import { fetchTorrentsInLinks } from '$lib/fetchTorrentsInLinks';
 import { getTitleFromIMDB } from '$lib/getTitleFromIMDB';
+import { parseMagnetLink } from '$lib/parseMagnetLink';
 import { duckduckgo, google, yandex } from '$lib/search';
 
 export async function GET({ params }) {
@@ -10,20 +11,7 @@ export async function GET({ params }) {
 	const links = await fetchTorrentsInLinks(siteLinks);
 	return new Response(
 		JSON.stringify({
-			streams: links
-				.map((link) => {
-					const parsedURL = new URL(link);
-					let infoHash = parsedURL.searchParams.get('xt');
-					if (infoHash) {
-						infoHash = infoHash.replace('urn:', '').replace('btih:', '');
-					}
-					if (!infoHash || infoHash.length != 40) {
-						return null;
-					}
-					const title = parsedURL.searchParams.get('dn') || '(NO NAME)';
-					return { infoHash, title };
-				})
-				.filter((x) => x != null)
+			streams: links.map(parseMagnetLink).filter((x) => x != null)
 		}),
 		{
 			headers: {
