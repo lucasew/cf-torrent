@@ -1,8 +1,12 @@
 import { REGEX_MATCH_INFOHASH, REGEX_MATCH_MAGNET } from './constants';
 import { decodeTorrent } from './decodeTorrent';
 import { matchFirstGroup } from './matchFirstGroup';
+import { isValidHttpUrl } from './url';
 
 export async function fetchTorrentsInSite(url: string) {
+	if (!isValidHttpUrl(url)) {
+		return [];
+	}
 	try {
 		const response = await fetch(url, {
 			cf: {
