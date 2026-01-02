@@ -1,4 +1,5 @@
 import { matchFirstGroup } from './matchFirstGroup';
+import { isValidHttpUrl } from './url';
 
 const REGEX_GOOGLE_MATCH_URL = /\/url\\?q=([^"&]*)/g;
 export type SearchResult = { link: string; source: 'Google' | 'DuckDuckGo' | 'Yandex' };
@@ -12,8 +13,8 @@ export async function google(query: string): Promise<SearchResult[]> {
 	const responseText = await response.text();
 	try {
 		const urls = await matchFirstGroup(responseText, REGEX_GOOGLE_MATCH_URL);
-		// Map to SearchResult with source tag
-		return urls.map((url) => ({ link: url, source: 'Google' }));
+		const decodedUrls = urls.map((url) => decodeURIComponent(url));
+		return decodedUrls.filter(isValidHttpUrl).map((url) => ({ link: url, source: 'Google' }));
 	} catch (e) {
 		console.error(e);
 		return [];
@@ -31,15 +32,16 @@ export async function duckduckgo(query: string): Promise<SearchResult[]> {
 	const responseText = await response.text();
 	try {
 		const urls = await matchFirstGroup(responseText, REGEX_DDG_MATCH_URL);
-		// Unique and map to SearchResult with source tag
-		return [...new Set(urls)].map((url) => ({ link: url, source: 'DuckDuckGo' }));
+		const decodedUrls = [...new Set(urls)].map((url) => decodeURIComponent(url));
+		return decodedUrls
+			.filter(isValidHttpUrl)
+			.map((url) => ({ link: url, source: 'DuckDuckGo' }));
 	} catch (e) {
 		console.error(e);
 		return [];
 	}
 }
 
-// Placeholder Yandex search: URL and regex to extract links
 const REGEX_YANDEX_MATCH_URL = /href="(.*?)"/g;
 export async function yandex(query: string): Promise<SearchResult[]> {
 	const response = await fetch(`https://yandex.com/search/?text=${encodeURIComponent(query)}`, {
@@ -51,7 +53,8 @@ export async function yandex(query: string): Promise<SearchResult[]> {
 	const responseText = await response.text();
 	try {
 		const urls = await matchFirstGroup(responseText, REGEX_YANDEX_MATCH_URL);
-		return urls.map((url) => ({ link: url, source: 'Yandex' }));
+		const decodedUrls = urls.map((url) => decodeURIComponent(url));
+		return decodedUrls.filter(isValidHttpUrl).map((url) => ({ link: url, source: 'Yandex' }));
 	} catch (e) {
 		console.error(e);
 		return [];
