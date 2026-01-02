@@ -1,6 +1,7 @@
 import { REGEX_MATCH_INFOHASH, REGEX_MATCH_MAGNET } from './constants';
 import { decodeTorrent } from './decodeTorrent';
 import { matchFirstGroup } from './matchFirstGroup';
+import { getHeaders } from './request';
 import { isValidHttpUrl } from './url';
 
 export async function fetchTorrentsInSite(url: string) {
@@ -9,6 +10,7 @@ export async function fetchTorrentsInSite(url: string) {
 	}
 	try {
 		const response = await fetch(url, {
+			headers: getHeaders(),
 			cf: {
 				cacheTtl: 2 * 3600,
 				cacheEverything: true
