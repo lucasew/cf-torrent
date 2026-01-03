@@ -33,9 +33,7 @@ export async function duckduckgo(query: string): Promise<SearchResult[]> {
 	try {
 		const urls = await matchFirstGroup(responseText, REGEX_DDG_MATCH_URL);
 		const decodedUrls = [...new Set(urls)].map((url) => decodeURIComponent(url));
-		return decodedUrls
-			.filter(isValidHttpUrl)
-			.map((url) => ({ link: url, source: 'DuckDuckGo' }));
+		return decodedUrls.filter(isValidHttpUrl).map((url) => ({ link: url, source: 'DuckDuckGo' }));
 	} catch (e) {
 		console.error(e);
 		return [];

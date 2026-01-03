@@ -13,13 +13,17 @@ export function isValidHttpUrl(url: string): boolean {
 		}
 
 		// 2. Prevent requests to internal or reserved IP addresses
-		const ipAddressRegex = /^(127\.|10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[0-1])\.|::1|fd[0-9a-f]{2}:)/i;
-		if (ipAddressRegex.test(parsedUrl.hostname) || parsedUrl.hostname.toLowerCase() === 'localhost') {
+		const ipAddressRegex =
+			/^(127\.|10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[0-1])\.|::1|fd[0-9a-f]{2}:)/i;
+		if (
+			ipAddressRegex.test(parsedUrl.hostname) ||
+			parsedUrl.hostname.toLowerCase() === 'localhost'
+		) {
 			return false;
 		}
 
 		return true;
-	} catch (e) {
+	} catch {
 		// URL parsing failed, so it's not a valid URL
 		return false;
 	}
