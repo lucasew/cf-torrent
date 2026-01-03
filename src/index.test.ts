@@ -15,4 +15,11 @@ describe('URL Validation', () => {
 		expect(isValidHttpUrl('http://127.0.0.1')).toBe(false);
 		expect(isValidHttpUrl('http://localhost')).toBe(false);
 	});
+
+	it('should return false for URLs with "0" as hostname to prevent SSRF bypass', () => {
+		expect(isValidHttpUrl('http://0/')).toBe(false);
+		expect(isValidHttpUrl('http://0.0.0.0/')).toBe(false);
+		expect(isValidHttpUrl('https://0/')).toBe(false);
+		expect(isValidHttpUrl('https://0.0.0.0/')).toBe(false);
+	});
 });
