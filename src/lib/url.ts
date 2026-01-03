@@ -13,8 +13,15 @@ export function isValidHttpUrl(url: string): boolean {
 		}
 
 		// 2. Prevent requests to internal or reserved IP addresses
+		// Remove brackets from IPv6 addresses for regex testing
+		const hostname = parsedUrl.hostname.replace(/^\[/, '').replace(/\]$/, '');
 		const ipAddressRegex = /^(127\.|10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[0-1])\.|::1|fd[0-9a-f]{2}:)/i;
-		if (ipAddressRegex.test(parsedUrl.hostname) || parsedUrl.hostname.toLowerCase() === 'localhost') {
+		if (
+			ipAddressRegex.test(hostname) ||
+			hostname.toLowerCase() === 'localhost' ||
+			hostname.startsWith('0.') || // Block IPs like 0.0.0.0
+			hostname === '0' // Block `0` as a hostname
+		) {
 			return false;
 		}
 
