@@ -13,7 +13,9 @@ export function isValidHttpUrl(url: string): boolean {
 		}
 
 		// 2. Prevent requests to internal or reserved IP addresses
-		const ipAddressRegex = /^(127\.|10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[0-1])\.|::1|fd[0-9a-f]{2}:)/i;
+		// 2. Prevent requests to internal or reserved IP addresses including "0" which resolves to localhost
+		const ipAddressRegex =
+			/^(0$|0\.|127\.|10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[0-1])\.|::1|fd[0-9a-f]{2}:)/i;
 		if (ipAddressRegex.test(parsedUrl.hostname) || parsedUrl.hostname.toLowerCase() === 'localhost') {
 			return false;
 		}
