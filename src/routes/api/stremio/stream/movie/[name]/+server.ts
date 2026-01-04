@@ -1,9 +1,8 @@
 import { getTorrentStreams } from '$lib/getTorrentStreams';
-
-const REGEX_IMDB_ID = /^tt\d+$/;
+import { isValidImdbId } from '$lib/imdb';
 
 export async function GET({ params }) {
-	if (!REGEX_IMDB_ID.test(params.name)) {
+	if (!isValidImdbId(params.name)) {
 		return new Response(JSON.stringify({ error: 'Invalid IMDB ID format' }), {
 			status: 400,
 			headers: {
