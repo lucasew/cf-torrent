@@ -10,7 +10,9 @@ interface TorrentStream {
 export async function getTorrentStreams(imdbId: string): Promise<TorrentStream[]> {
 	const title = await getTitleFromIMDB(imdbId);
 	const siteLinks = (
-		await Promise.all([google, duckduckgo, yandex].map((f) => f(`${title} torrent`)))
+		await Promise.all(
+			[google, duckduckgo, yandex].map((f) => f(`${encodeURIComponent(title)} torrent`))
+		)
 	).flat();
 	const links = await fetchTorrentsInLinks(siteLinks);
 	return links
