@@ -18,7 +18,7 @@
 			<div>
 				<h3 class="font-bold">Trackers</h3>
 				<ul class="list-disc list-inside text-sm">
-					{#each torrentURL.searchParams.getAll('tr') || [] as tracker}
+					{#each torrentURL.searchParams.getAll('tr') || [] as tracker (tracker)}
 						<li class="truncate">{tracker}</li>
 					{/each}
 				</ul>
