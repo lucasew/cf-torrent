@@ -16,7 +16,12 @@ export function isValidHttpUrl(url: string): boolean {
 		const ipAddressRegex =
 			/^(127\.|10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[0-1])\.|::1|fd[0-9a-f]{2}:)/i;
 		const hostname = parsedUrl.hostname.replace(/^\[|\]$/g, '');
-		if (ipAddressRegex.test(hostname) || hostname.toLowerCase() === 'localhost') {
+		if (
+			ipAddressRegex.test(hostname) ||
+			hostname.toLowerCase() === 'localhost' ||
+			hostname === '0' ||
+			hostname === '0.0.0.0'
+		) {
 			return false;
 		}
 
