@@ -11,3 +11,4 @@ vite.config.ts.timestamp-*
 .cloudflare
 result
 package-lock.json
+dev_server.log
