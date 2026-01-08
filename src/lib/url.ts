@@ -16,7 +16,11 @@ export function isValidHttpUrl(url: string): boolean {
 		// For IPv6, hostname is bracketed (e.g., [::1]), so we strip them for regex matching.
 		const hostname = parsedUrl.hostname.replace(/[[\]]/g, '');
 
-		if (hostname.toLowerCase() === 'localhost') {
+		if (
+			hostname.toLowerCase() === 'localhost' ||
+			hostname === '0' ||
+			hostname === '0.0.0.0'
+		) {
 			return false;
 		}
 
