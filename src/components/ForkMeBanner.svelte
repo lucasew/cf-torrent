@@ -2,6 +2,7 @@
 	export let url: string;
 </script>
 
+<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
 <a href={url} target="_blank" style="top: 0; right: 0; position: absolute;">
 	<img
 		decoding="async"

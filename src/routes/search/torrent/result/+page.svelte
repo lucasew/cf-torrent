@@ -7,7 +7,7 @@
 </script>
 
 {#if links && links.length > 0}
-  {#each links as item}
+  {#each links as item (item.torrent)}
     <TorrentCard torrent={item.torrent} source={item.source} />
   {/each}
 {:else}

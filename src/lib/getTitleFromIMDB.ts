@@ -3,6 +3,7 @@ import { matchFirstGroup } from './matchFirstGroup';
 
 const REGEX_IMDB_MATCH_TITLE = /<title>(.*) - IMDb<\/title>/g;
 const REGEX_IMDB_ID = /^tt\d+$/;
+const REGEX_STRIP_HTML = /<[^>]*>?/gm;
 export async function getTitleFromIMDB(imdbid: string) {
 	if (!REGEX_IMDB_ID.test(imdbid)) {
 		throw new Error(`invalid imdb id format for ${imdbid}`);

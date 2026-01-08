@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { SvelteURL } from 'svelte/reactivity';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 
@@ -16,7 +17,7 @@
 
 	function handleFormSubmit(e: SubmitEvent) {
 		e.preventDefault();
-		let newURL = new URL(url.toString());
+		let newURL = new SvelteURL(url.toString());
 		if (!newURL.href.endsWith('/result')) {
 			newURL.href += '/result';
 		}

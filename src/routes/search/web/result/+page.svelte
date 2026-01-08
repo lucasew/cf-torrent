@@ -27,7 +27,7 @@
 
 {#if links && links.length > 0}
   <ul class="space-y-2">
-    {#each links as result}
+    {#each links as result (result.link)}
       <li class="flex items-center gap-2">
         <a href={result.link} target="_blank" rel="noopener noreferrer" class="link link-primary">{result.link}</a>
         <span class="badge badge-secondary">{result.source}</span>
