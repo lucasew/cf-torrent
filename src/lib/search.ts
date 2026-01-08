@@ -4,6 +4,21 @@ import { isValidHttpUrl } from './url';
 export type SearchResult = { link: string; source: 'Google' | 'DuckDuckGo' | 'Yandex' };
 type SearchEngine = 'Google' | 'DuckDuckGo' | 'Yandex';
 
+const SEARCH_ENGINES = {
+	Google: {
+		urlTemplate: 'https://www.google.com/search?q=',
+		regex: /\/url\\?q=([^"&]*)/g
+	},
+	DuckDuckGo: {
+		urlTemplate: 'https://duckduckgo.com/html?q=',
+		regex: /uddg=([^&"]*)/g
+	},
+	Yandex: {
+		urlTemplate: 'https://yandex.com/search/?text=',
+		regex: /href="(.*?)"/g
+	}
+};
+
 async function _search(
 	query: string,
 	urlTemplate: string,
@@ -27,19 +42,19 @@ async function _search(
 	}
 }
 
-const REGEX_GOOGLE_MATCH_URL = /\/url\\?q=([^"&]*)/g;
 export function google(query: string): Promise<SearchResult[]> {
-	return _search(query, 'https://www.google.com/search?q=', REGEX_GOOGLE_MATCH_URL, 'Google');
+	const engine = SEARCH_ENGINES['Google'];
+	return _search(query, engine.urlTemplate, engine.regex, 'Google');
 }
 
-const REGEX_DDG_MATCH_URL = /uddg=([^&"]*)/g;
 export function duckduckgo(query: string): Promise<SearchResult[]> {
-	return _search(query, 'https://duckduckgo.com/html?q=', REGEX_DDG_MATCH_URL, 'DuckDuckGo');
+	const engine = SEARCH_ENGINES['DuckDuckGo'];
+	return _search(query, engine.urlTemplate, engine.regex, 'DuckDuckGo');
 }
 
-const REGEX_YANDEX_MATCH_URL = /href="(.*?)"/g;
 export function yandex(query: string): Promise<SearchResult[]> {
-	return _search(query, 'https://yandex.com/search/?text=', REGEX_YANDEX_MATCH_URL, 'Yandex');
+	const engine = SEARCH_ENGINES['Yandex'];
+	return _search(query, engine.urlTemplate, engine.regex, 'Yandex');
 }
 
 export async function combined(query: string) {
