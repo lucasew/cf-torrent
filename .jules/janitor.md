@@ -9,3 +9,9 @@
 **Root Cause:** The initial implementation likely evolved by adding one search engine at a time, resulting in separate, hardcoded constants within each new function rather than a unified configuration structure.
 **Solution:** I refactored the code to define a single `SEARCH_ENGINES` object. This object acts as a centralized registry, mapping each search engine's name to its specific configuration (URL template and regex). The individual search functions were then simplified to look up their configuration from this object.
 **Pattern:** For related entities (like different providers, themes, or feature flags) that share a common data structure, group their configuration into a single, structured object or map. This improves code organization, reduces boilerplate, and makes the system more scalable and maintainable.
+
+## 2024-07-24 - Exclude Non-Code Directories from Linting
+**Issue:** The `bun lint` command was failing because `prettier` was attempting to format files in the `.jules/` directory, which contains markdown files for agent journals, not application code. This caused unnecessary CI failures and developer friction.
+**Root Cause:** The `.prettierignore` file did not include the `.jules/` directory, so the linting script was checking all files in the repository, including non-code files.
+**Solution:** I added `.jules/` to the `.prettierignore` file. This tells `prettier` to skip this directory, ensuring the linting process only focuses on actual source code.
+**Pattern:** Configure linting and formatting tools to ignore non-code directories like `.jules/`, `.github/`, or documentation folders. This prevents tool-related noise and ensures that CI checks are focused on code quality.
