@@ -1,9 +1,6 @@
 import { matchFirstGroup } from './matchFirstGroup';
 import { isValidHttpUrl } from './url';
 
-export type SearchResult = { link: string; source: 'Google' | 'DuckDuckGo' | 'Yandex' };
-type SearchEngine = 'Google' | 'DuckDuckGo' | 'Yandex';
-
 const SEARCH_ENGINES = {
 	Google: {
 		urlTemplate: 'https://www.google.com/search?q=',
@@ -19,13 +16,16 @@ const SEARCH_ENGINES = {
 	}
 };
 
+type SearchEngine = keyof typeof SEARCH_ENGINES;
+type SearchEngineConfig = (typeof SEARCH_ENGINES)[SearchEngine];
+export type SearchResult = { link: string; source: SearchEngine };
+
 async function _search(
 	query: string,
-	urlTemplate: string,
-	regex: RegExp,
-	source: SearchEngine
+	source: SearchEngine,
+	config: SearchEngineConfig
 ): Promise<SearchResult[]> {
-	const response = await fetch(`${urlTemplate}${encodeURIComponent(query)}`, {
+	const response = await fetch(`${config.urlTemplate}${encodeURIComponent(query)}`, {
 		cf: {
 			cacheTtl: 3600,
 			cacheEverything: true
@@ -33,7 +33,7 @@ async function _search(
 	});
 	const responseText = await response.text();
 	try {
-		const urls = await matchFirstGroup(responseText, regex);
+		const urls = await matchFirstGroup(responseText, config.regex);
 		const decodedUrls = [...new Set(urls)].map((url) => decodeURIComponent(url));
 		return decodedUrls.filter(isValidHttpUrl).map((url) => ({ link: url, source }));
 	} catch (e) {
@@ -43,18 +43,15 @@ async function _search(
 }
 
 export function google(query: string): Promise<SearchResult[]> {
-	const engine = SEARCH_ENGINES['Google'];
-	return _search(query, engine.urlTemplate, engine.regex, 'Google');
+	return _search(query, 'Google', SEARCH_ENGINES.Google);
 }
 
 export function duckduckgo(query: string): Promise<SearchResult[]> {
-	const engine = SEARCH_ENGINES['DuckDuckGo'];
-	return _search(query, engine.urlTemplate, engine.regex, 'DuckDuckGo');
+	return _search(query, 'DuckDuckGo', SEARCH_ENGINES.DuckDuckGo);
 }
 
 export function yandex(query: string): Promise<SearchResult[]> {
-	const engine = SEARCH_ENGINES['Yandex'];
-	return _search(query, engine.urlTemplate, engine.regex, 'Yandex');
+	return _search(query, 'Yandex', SEARCH_ENGINES.Yandex);
 }
 
 export async function combined(query: string) {
