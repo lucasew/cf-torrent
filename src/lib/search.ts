@@ -17,14 +17,10 @@ const SEARCH_ENGINES = {
 };
 
 type SearchEngine = keyof typeof SEARCH_ENGINES;
-type SearchEngineConfig = (typeof SEARCH_ENGINES)[SearchEngine];
 export type SearchResult = { link: string; source: SearchEngine };
 
-async function _search(
-	query: string,
-	source: SearchEngine,
-	config: SearchEngineConfig
-): Promise<SearchResult[]> {
+async function _search(query: string, source: SearchEngine): Promise<SearchResult[]> {
+	const config = SEARCH_ENGINES[source];
 	const response = await fetch(`${config.urlTemplate}${encodeURIComponent(query)}`, {
 		cf: {
 			cacheTtl: 3600,
@@ -43,15 +39,15 @@ async function _search(
 }
 
 export function google(query: string): Promise<SearchResult[]> {
-	return _search(query, 'Google', SEARCH_ENGINES.Google);
+	return _search(query, 'Google');
 }
 
 export function duckduckgo(query: string): Promise<SearchResult[]> {
-	return _search(query, 'DuckDuckGo', SEARCH_ENGINES.DuckDuckGo);
+	return _search(query, 'DuckDuckGo');
 }
 
 export function yandex(query: string): Promise<SearchResult[]> {
-	return _search(query, 'Yandex', SEARCH_ENGINES.Yandex);
+	return _search(query, 'Yandex');
 }
 
 export async function combined(query: string) {
