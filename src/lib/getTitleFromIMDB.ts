@@ -1,4 +1,4 @@
-import { htmlSanitize } from './htmlSanitize';
+import he from 'he';
 import { matchFirstGroup } from './matchFirstGroup';
 
 const REGEX_IMDB_MATCH_TITLE = /<title>(.*) - IMDb<\/title>/g;
@@ -17,9 +17,9 @@ export async function getTitleFromIMDB(imdbid: string) {
 			}
 		});
 		const responseText = await response.text();
-		return htmlSanitize(matchFirstGroup(responseText, REGEX_IMDB_MATCH_TITLE)[0]);
+		return he.encode(matchFirstGroup(responseText, REGEX_IMDB_MATCH_TITLE)[0]);
 	} catch (e) {
 		console.error(e);
-		return htmlSanitize(imdbid);
+		return he.encode(imdbid);
 	}
 }
