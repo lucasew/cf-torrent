@@ -4,6 +4,12 @@
 **Solution:** After running any installation or build commands, carefully review the changed files. Revert any unintended modifications to auto-generated files before committing.
 **Pattern:** Auto-generated files, especially in i18n libraries like `paraglide-js`, are sensitive to the build environment. Always revert changes to these files if they are not directly related to the task at hand to keep commits small, focused, and reviewable.
 
+## 2024-05-24 - Consolidate Scattered Configuration
+**Issue:** Configuration data for different search engines (URL templates, regex patterns) was scattered across multiple functions in `src/lib/search.ts`. This led to code duplication and made it cumbersome to add, remove, or modify search providers.
+**Root Cause:** The initial implementation likely evolved by adding one search engine at a time, resulting in separate, hardcoded constants within each new function rather than a unified configuration structure.
+**Solution:** I refactored the code to define a single `SEARCH_ENGINES` object. This object acts as a centralized registry, mapping each search engine's name to its specific configuration (URL template and regex). The individual search functions were then simplified to look up their configuration from this object.
+**Pattern:** For related entities (like different providers, themes, or feature flags) that share a common data structure, group their configuration into a single, structured object or map. This improves code organization, reduces boilerplate, and makes the system more scalable and maintainable.
+
 ## 2024-07-24 - Exclude Non-Code Directories from Linting
 **Issue:** The `bun lint` command was failing because `prettier` was attempting to format files in the `.jules/` directory, which contains markdown files for agent journals, not application code. This caused unnecessary CI failures and developer friction.
 **Root Cause:** The `.prettierignore` file did not include the `.jules/` directory, so the linting script was checking all files in the repository, including non-code files.
