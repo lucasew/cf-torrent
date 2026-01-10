@@ -4,7 +4,7 @@ import { matchFirstGroup } from './matchFirstGroup';
 const REGEX_IMDB_MATCH_TITLE = /<title>(.*) - IMDb<\/title>/g;
 // IMDB IDs are typically 7-8 digits, allowing up to 12 for future-proofing and preventing DoS.
 const REGEX_IMDB_ID = /^tt\d{7,12}$/;
-const REGEX_STRIP_HTML = /<[^>]*>?/gm;
+
 export async function getTitleFromIMDB(imdbid: string) {
 	if (!REGEX_IMDB_ID.test(imdbid)) {
 		throw new Error(`invalid imdb id format for ${imdbid}`);
@@ -20,6 +20,6 @@ export async function getTitleFromIMDB(imdbid: string) {
 		return htmlSanitize(matchFirstGroup(responseText, REGEX_IMDB_MATCH_TITLE)[0]);
 	} catch (e) {
 		console.error(e);
-		return imdbid;
+		return htmlSanitize(imdbid);
 	}
 }
