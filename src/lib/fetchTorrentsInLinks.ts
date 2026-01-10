@@ -1,5 +1,5 @@
 import { fetchTorrentsInSite } from './fetchTorrentsInSite';
-import { htmlDecode } from './htmlDecode';
+import he from 'he';
 import { rankLinks } from './rankLinks';
 
 export async function fetchTorrentsInLinks(links: string[]) {
@@ -7,7 +7,7 @@ export async function fetchTorrentsInLinks(links: string[]) {
 	const fetched = await Promise.all(sortedLinks.map((t) => fetchTorrentsInSite(t).catch(() => [])));
 	const fetchedProcessed = fetched
 		.flat()
-		.map((x) => htmlDecode(x))
+		.map((x) => he.decode(x))
 		.sort((t) => -t.indexOf('dn='));
 	return [...new Set(fetchedProcessed)];
 }
