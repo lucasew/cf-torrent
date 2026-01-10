@@ -15,3 +15,9 @@
 **Root Cause:** The `.prettierignore` file did not include the `.jules/` directory, so the linting script was checking all files in the repository, including non-code files.
 **Solution:** I added `.jules/` to the `.prettierignore` file. This tells `prettier` to skip this directory, ensuring the linting process only focuses on actual source code.
 **Pattern:** Configure linting and formatting tools to ignore non-code directories like `.jules/`, `.github/`, or documentation folders. This prevents tool-related noise and ensures that CI checks are focused on code quality.
+
+## 2024-07-25 - Remove Redundant Abstraction
+**Issue:** The codebase contained a file `src/lib/htmlDecode.ts` that only re-exported the `decode` function from the `he` library. This created an unnecessary layer of abstraction and added an extra file to the project for no real benefit.
+**Root Cause:** This might have been created with the intention of abstracting away the `he` library in case it needed to be replaced in the future, but for a simple function like this, it just adds clutter.
+**Solution:** I removed the `htmlDecode.ts` file and updated the only file that used it (`src/lib/fetchTorrentsInLinks.ts`) to import and use `he.decode` directly.
+**Pattern:** Avoid creating thin wrappers or re-exporting single functions from libraries if the wrapper doesn't add any new logic or a more meaningful name. Using the library directly simplifies the codebase and reduces the number of files to maintain.
