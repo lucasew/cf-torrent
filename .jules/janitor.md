@@ -15,3 +15,9 @@
 **Root Cause:** The `.prettierignore` file did not include the `.jules/` directory, so the linting script was checking all files in the repository, including non-code files.
 **Solution:** I added `.jules/` to the `.prettierignore` file. This tells `prettier` to skip this directory, ensuring the linting process only focuses on actual source code.
 **Pattern:** Configure linting and formatting tools to ignore non-code directories like `.jules/`, `.github/`, or documentation folders. This prevents tool-related noise and ensures that CI checks are focused on code quality.
+
+## 2026-01-10 - Centralize JSON Response Logic
+**Issue:** API route handlers in `src/routes/api/` were manually creating `Response` objects for JSON, leading to duplicated headers and inconsistent status code handling.
+**Root Cause:** The absence of a shared utility function for creating JSON responses encouraged developers to write boilerplate code for each endpoint.
+**Solution:** I created a `json` helper function in `src/lib/requests.ts` that encapsulates the logic for creating a `Response` with the correct JSON headers and status. All API routes were updated to use this new helper.
+**Pattern:** When a specific task, such as returning a JSON response, is performed in multiple places, extract the common logic into a reusable helper function. This reduces code duplication, enforces consistency, and makes the code easier to maintain.
