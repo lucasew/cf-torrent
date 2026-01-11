@@ -1,5 +1,6 @@
 import { fetchTorrentsInLinks } from '$lib/fetchTorrentsInLinks';
 import { getTitleFromIMDB } from '$lib/getTitleFromIMDB';
+import { htmlSanitize } from '$lib/htmlSanitize';
 import { duckduckgo, google, yandex } from '$lib/search';
 
 interface TorrentStream {
@@ -8,7 +9,8 @@ interface TorrentStream {
 }
 
 export async function getTorrentStreams(imdbId: string): Promise<TorrentStream[]> {
-	const title = await getTitleFromIMDB(imdbId);
+	let title = await getTitleFromIMDB(imdbId);
+	title = htmlSanitize(title);
 	const siteLinks = (
 		await Promise.all(
 			[google, duckduckgo, yandex].map((f) => f(`${encodeURIComponent(title)} torrent`))
