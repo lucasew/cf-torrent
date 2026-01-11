@@ -21,3 +21,9 @@
 **Root Cause:** The absence of a shared utility function for creating JSON responses encouraged developers to write boilerplate code for each endpoint.
 **Solution:** I created a `json` helper function in `src/lib/requests.ts` that encapsulates the logic for creating a `Response` with the correct JSON headers and status. All API routes were updated to use this new helper.
 **Pattern:** When a specific task, such as returning a JSON response, is performed in multiple places, extract the common logic into a reusable helper function. This reduces code duplication, enforces consistency, and makes the code easier to maintain.
+
+## 2026-01-11 - Reuse Existing Helper Functions
+**Issue:** The `getTorrentStreams` function was manually combining search results from multiple engines, even though a `combined` function already existed in `search.ts` for this purpose. This created unnecessary code duplication.
+**Root Cause:** The developer who wrote `getTorrentStreams` may not have been aware of the `combined` function, or it was created after `getTorrentStreams` was implemented.
+**Solution:** I refactored `getTorrentStreams` to use the existing `combined` function, removing the redundant logic.
+**Pattern:** Before implementing logic that aggregates results from multiple sources, check for existing helper functions that already provide this functionality. Reusing code improves maintainability and reduces the chance of bugs.
